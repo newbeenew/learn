@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,10 +10,33 @@
     tools:context="d.ql.account.AddCurrentActivity">
     
     <EditText
-        android:id="@+id/current_input"
+        android:id="@+id/comment"
+        android:layout_weight="1"
+        android:width="0dp"
+        android:inputType="textMultiLine"
         android:layout_width="wrap_content"
+        android:singleLine="false"
+        android:layout_height="wrap_content"
+        android:text="干嘛败家"/>
+
+    
+   <!-- <Button
+        android:layout_width="wrap_content"
+        android:layout_below="@id/comment"
+        android:layout_height="wrap_coentntent"
+        android:text="123"/>-->
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></Spinner>
+    <EditText
+        android:id="@+id/current_input"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="0dp"
+        android:layout_below="@id/comment"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:digits="123456789."
+        android:imeOptions="actionDone"
         android:singleLine="true"/>
 
-</RelativeLayout>
+</LinearLayout>
