@@ -10,8 +10,15 @@
     android:orientation="vertical"
     tools:context="d.ql.account.AddCurrentActivity">
 
+    <Spinner
+        android:id="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/type"/>
+
     <EditText
         android:id="@+id/comment"
+        android:layout_below="@id/type"
         android:inputType="textMultiLine"
         android:layout_width="fill_parent"
         android:singleLine="false"
@@ -21,15 +28,8 @@
         android:maxLines="6"
         android:hint="干嘛败家"/>
 
-    
-   <!-- <Button
-        android:layout_width="wrap_content"
-        android:layout_below="@id/comment"
-        android:layout_height="wrap_coentntent"
-        android:text="123"/>-->
-    <Spinner
 
-        android:layout_gravity="center"
+    <Spinner
         android:layout_below="@id/comment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"></Spinner>
