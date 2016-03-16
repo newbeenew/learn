@@ -1,20 +1,26 @@
 package d.ql.account;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
+/**
+ * Created by ql on 16-3-16.
+ */
+public class account {
 
-public class account extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
+    public String getName() {
+        return name;
     }
 
-    public void addCurrent(View view){
-        Intent intent = new Intent(this, AddCurrentActivity.class);
-        startActivity(intent);
+    public void setName(String name) {
+        this.name = name;
     }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    private String name;
+    private double balance;
 }
