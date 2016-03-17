@@ -1,5 +1,7 @@
 package d.ql.account;
 
+import java.util.Vector;
+
 /**
  * Created by ql on 16-3-16.
  */
@@ -24,3 +26,4 @@ public class account {
     private String name;
     private double balance;
 }
+
