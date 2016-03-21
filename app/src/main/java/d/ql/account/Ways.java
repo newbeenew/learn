@@ -7,6 +7,10 @@ import java.util.Vector;
  */
 public class Ways {
 
+    public static Ways GetInstace()
+    {
+        return  s_instance;
+    }
     public Vector<String> getWays() {
         return m_ways;
     }
@@ -16,5 +20,6 @@ public class Ways {
     }
 
 
-    private Vector<String> m_ways;
+    private Vector<String> m_ways = new Vector<String>();
+    private static Ways s_instance = new Ways();
 }
