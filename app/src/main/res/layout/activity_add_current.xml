@@ -30,10 +30,17 @@
 
 
     <Spinner
-        android:id="@+id/way"
+        android:id="@+id/select_way"
         android:layout_below="@id/comment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"></Spinner>
+
+    <Spinner
+        android:id="@+id/select_account"
+        android:layout_below="@id/select_way"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"></Spinner>
 
     <EditText
         android:id="@+id/current_input"

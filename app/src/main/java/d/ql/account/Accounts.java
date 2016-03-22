@@ -5,7 +5,7 @@ import java.util.Vector;
 /**
  * Created by ql on 16-3-18.
  */
-public class accounts{
+public class Accounts {
     public Vector<account> getM_accountVec() {
         return m_accountVec;
     }
@@ -34,11 +34,11 @@ public class accounts{
         }
         return null;
     }
-    public static accounts GetInstance(){
+    public static Accounts GetInstance(){
         return s_instance;
     }
 
 
-    private Vector<account> m_accountVec;
-    private static accounts s_instance = new accounts();
+    private Vector<account> m_accountVec = new Vector<account>();
+    private static Accounts s_instance = new Accounts();
 }
