@@ -19,5 +19,10 @@ public class currents {
         m_currentVec.remove(_current);
     }
 
+    public static currents GetInstance(){
+        return s_instance;
+    }
+
     private Vector<current> m_currentVec;
+    private static currents s_instance = new currents();
 }

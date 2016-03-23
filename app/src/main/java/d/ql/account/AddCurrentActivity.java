@@ -12,10 +12,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.Reader;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 import d.ql.account.Accounts;
+import d.ql.account.Ways;
 
 public class AddCurrentActivity extends AppCompatActivity {
 
@@ -30,13 +32,12 @@ public class AddCurrentActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.current_input);
         editText.setOnEditorActionListener(new onCurrentEditorActionListener(this));
         Timer timer = new Timer();
-        timer.schedule(new TimerTask()
-                       {
+        timer.schedule(new TimerTask() {
                            public void run() {
                                EditText editText = (EditText) findViewById(R.id.current_input);
                                editText.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
                                InputMethodManager inputManager =
-                                       (InputMethodManager)editText.getContext().
+                                       (InputMethodManager) editText.getContext().
                                                getSystemService(Context.INPUT_METHOD_SERVICE);
                                inputManager.showSoftInput(editText, 0);
                            }
@@ -49,12 +50,27 @@ public class AddCurrentActivity extends AppCompatActivity {
     private void InitWaySpinner()
     {
         Spinner way = (Spinner)findViewById(R.id.select_way);
-        Vector<String> ways = Ways.GetInstace().getWays();
+        Vector<way> ways = Ways.GetInstace().getWays();
         if (ways.size() <= 0){
-            ways.add("消费");
+            way consume_way = new way();
+            consume_way.set_name("消费");
+            consume_way.set_type(d.ql.account.way.WAY_TYPE.OUTGO);
+            ways.add(consume_way);
         }
+
+        Spinner type = (Spinner)findViewById(R.id.type);
+        String type_name = type.getSelectedItem().toString();
+        d.ql.account.way.WAY_TYPE eType = d.ql.account.way.WAY_TYPE.OUTGO;
+        if (type_name.equals("收入") ) {
+            eType = d.ql.account.way.WAY_TYPE.INCOME;
+        }
+
         String[] ways_array = new String[ways.size()];
-        ways.copyInto(ways_array);
+        for(int i = 0; i < ways.size(); ++i){
+            if (eType == ways.elementAt(i).get_type()) {
+                ways_array[i] = ways.elementAt(i).get_name();
+            }
+        }
 
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, ways_array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -82,18 +98,33 @@ public class AddCurrentActivity extends AppCompatActivity {
     }
 
     private class onCurrentEditorActionListener implements EditText.OnEditorActionListener{
-        public onCurrentEditorActionListener(AddCurrentActivity _activity
-        ){
+        public onCurrentEditorActionListener(AddCurrentActivity _activity){
             activity=_activity;
         }
-        public  boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-        {
 
-            new AlertDialog.Builder(activity)
-                    .setTitle("标题")
-                    .setMessage("简单消息框")
-                    .setPositiveButton("确定", null)
-                    .show();
+        public  boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            Spinner select_way_Spinner = (Spinner)findViewById(R.id.select_way);
+            String way_name = select_way_Spinner.getSelectedItem().toString();
+            way selected_way = Ways.GetInstace().get_way(way_name);
+
+            Spinner account = (Spinner)findViewById(R.id.select_account);
+            String account_way = account.getSelectedItem().toString();
+            account select_account = Accounts.GetInstance().get_account(account_way);
+
+           // EditText current_text = (EditText)findViewById(R.id.current_input);
+            double current = Double.parseDouble(v.getText().toString());
+            double new_Balance = select_account.getBalance() - current;
+            select_account.setBalance(new_Balance);
+
+            EditText decript_input = (EditText)findViewById(R.id.comment);
+
+            current new_current = new current();
+            new_current.set_account(select_account);
+            new_current.set_descript(decript_input.getText().toString());
+            new_current.set_way(selected_way);
+            new_current.set_payment(current);
+            currents.GetInstance().add_current(new_current);
+            AddCurrentActivity.this.finish();
             return true;
         }
         private AddCurrentActivity activity;

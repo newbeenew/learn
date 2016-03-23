@@ -4,7 +4,7 @@ package d.ql.account;
  * Created by ql on 16-3-16.
  */
 import d.ql.account.account;
-import d.ql.account.Ways;
+import d.ql.account.way;
 public class current {
 
     public account get_account() {
@@ -31,17 +31,17 @@ public class current {
         this.m_payment = m_payment;
     }
 
-    public String getWay() {
-        return way;
+    public way get_way() {
+        return m_way;
     }
 
-    public void setWay(String way) {
-        this.way = way;
+    public void set_way(way _way) {
+        this.m_way = _way;
     }
 
 
     private account m_account;
     private String m_descript;
     private double m_payment;
-    private String way;
+    private way m_way;
 }
