@@ -33,7 +33,11 @@ public class Ways {
         return null;
     }
 
+    public void read_data() {
+        
+    }
 
     private Vector<way> m_ways = new Vector<way>();
     private static Ways s_instance = new Ways();
+    private String data_file = ".data/Ways.xml";
 }

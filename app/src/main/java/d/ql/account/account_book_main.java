@@ -4,27 +4,40 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.Vector;
 
-public class account_book extends AppCompatActivity {
+public class account_book_main extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        Intent intent = getIntent();
+        if (intent != null){
+        boolean succcess = intent.getBooleanExtra(AddCurrentActivity.add_current_result, false);
+        if(succcess){
+            Toast.makeText(account_book_main.this,"添加成功",Toast.LENGTH_LONG).show();
+        }
+        }
     }
 
     public void addCurrent(View view){
         Intent intent = new Intent(this, AddCurrentActivity.class);
-        startActivity(intent);
+        int result = -1;
+        startActivityForResult(intent, result);
+
     }
+
 
     public Vector<account> get_accountVector() {
         return m_accountVector;
     }
 
-    public void add_account(account _account) {
+
+
+        public void add_account(account _account) {
         m_accountVector.add(_account);
     }
 

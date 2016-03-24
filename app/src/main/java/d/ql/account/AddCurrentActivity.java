@@ -2,6 +2,7 @@ package d.ql.account;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -97,6 +98,7 @@ public class AddCurrentActivity extends AppCompatActivity {
         select_account.setAdapter(adapter);
     }
 
+    public final static String add_current_result = "add_current_result";
     private class onCurrentEditorActionListener implements EditText.OnEditorActionListener{
         public onCurrentEditorActionListener(AddCurrentActivity _activity){
             activity=_activity;
@@ -123,8 +125,12 @@ public class AddCurrentActivity extends AppCompatActivity {
             new_current.set_descript(decript_input.getText().toString());
             new_current.set_way(selected_way);
             new_current.set_payment(current);
-            currents.GetInstance().add_current(new_current);
-            AddCurrentActivity.this.finish();
+          /*  currents.GetInstance().add_current(new_current);
+            AddCurrentActivity.this.setResult(RESULT_OK);
+            AddCurrentActivity.this.finish();*/
+            Intent intent = new Intent(activity,account_book_main.class);
+            intent.putExtra(add_current_result,true);
+            startActivity(intent);
             return true;
         }
         private AddCurrentActivity activity;

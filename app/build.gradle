@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "d.ql.account_book"
+        applicationId "d.ql.account_book_main"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1

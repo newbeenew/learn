@@ -19,6 +19,11 @@ public class currents {
         m_currentVec.remove(_current);
     }
 
+    public void read_data()
+    {
+
+    }
+
     public static currents GetInstance(){
         return s_instance;
     }
