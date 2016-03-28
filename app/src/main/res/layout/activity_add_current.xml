@@ -17,8 +17,24 @@
         android:entries="@array/type"/>
 
     <EditText
-        android:id="@+id/comment"
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/type"
+        android:editable="false"
+        android:onClick="change_time"/>
+
+    <EditText
+        android:id="@+id/time"
+        android:layout_below="@id/type"
+        android:layout_toRightOf="@id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:editable="false"
+        android:onClick="change_time"/>
+    <EditText
+        android:id="@+id/comment"
+        android:layout_below="@id/time"
         android:inputType="textMultiLine"
         android:layout_width="fill_parent"
         android:singleLine="false"

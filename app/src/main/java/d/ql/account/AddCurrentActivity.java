@@ -1,19 +1,28 @@
 package d.ql.account;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.io.Reader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -46,7 +55,32 @@ public class AddCurrentActivity extends AppCompatActivity {
                        },
 
                 998);
+
+
+        set_time_fmt((EditText) findViewById(R.id.date), TIME_FMT.DATE);
+        set_time_fmt((EditText) findViewById(R.id.time), TIME_FMT.TIME);
+
+
     }
+
+    private enum TIME_FMT{
+        DATE,
+        TIME
+    }
+    private void set_time_fmt( EditText edit, TIME_FMT fmt){
+
+        SimpleDateFormat time_fmt;
+        if(fmt == TIME_FMT.TIME){
+            time_fmt = new SimpleDateFormat("HH:mm:ss");
+        }else{
+            time_fmt = new SimpleDateFormat("yyyy-MM-dd");
+        }
+
+        Date full_time = new Date(System.currentTimeMillis());
+        edit.setText(time_fmt.format(full_time));
+    }
+
+
 
     private void InitWaySpinner()
     {
@@ -134,5 +168,37 @@ public class AddCurrentActivity extends AppCompatActivity {
             return true;
         }
         private AddCurrentActivity activity;
+    }
+
+    private FrameLayout create_time_piker(TIME_FMT fmt){
+        if (fmt == TIME_FMT.TIME){
+            return new TimePicker(this);
+        }
+        else{
+            return new DatePicker(this);
+        }
+    }
+
+    public void change_time(View view) {
+        final Calendar c = Calendar.getInstance();
+        final EditText edit = (EditText)view;
+        if(edit.getId() == R.id.date){
+            DatePickerDialog date_piker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    edit.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                }
+            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH),c.get(Calendar.DATE));
+            date_piker.show();
+        }
+        else if(edit.getId() == R.id.time){
+            TimePickerDialog time_piker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    edit.setText(hourOfDay + ":" + minute + "00");
+                }
+            }, c.get(Calendar.HOUR), c.get(Calendar.MINUTE),true);
+            time_piker.show();
+        }
     }
 }

@@ -34,7 +34,7 @@ public class Ways {
     }
 
     public void read_data() {
-        
+
     }
 
     private Vector<way> m_ways = new Vector<way>();

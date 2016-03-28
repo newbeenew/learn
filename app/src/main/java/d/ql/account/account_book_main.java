@@ -14,23 +14,23 @@ public class account_book_main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+
         Intent intent = getIntent();
         if (intent != null){
-        boolean succcess = intent.getBooleanExtra(AddCurrentActivity.add_current_result, false);
-        if(succcess){
-            Toast.makeText(account_book_main.this,"添加成功",Toast.LENGTH_LONG).show();
-        }
+            boolean success = intent.getBooleanExtra(AddCurrentActivity.add_current_result, false);
+            if(success){
+                Toast.makeText(account_book_main.this,"添加成功",Toast.LENGTH_LONG).show();
+            }
         }
     }
 
     public void addCurrent(View view){
         Intent intent = new Intent(this, AddCurrentActivity.class);
-        int result = -1;
-        startActivityForResult(intent, result);
+        startActivity(intent);
 
     }
 
-
+/*
     public Vector<account> get_accountVector() {
         return m_accountVector;
     }
@@ -41,5 +41,5 @@ public class account_book_main extends AppCompatActivity {
         m_accountVector.add(_account);
     }
 
-    private Vector<account> m_accountVector;
+    private Vector<account> m_accountVector;*/
 }
