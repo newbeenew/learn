@@ -3,6 +3,8 @@ package d.ql.account;
 /**
  * Created by ql on 16-3-16.
  */
+import java.util.Date;
+
 import d.ql.account.account;
 import d.ql.account.way;
 public class current {
@@ -39,7 +41,15 @@ public class current {
         this.m_way = _way;
     }
 
+    public Date get_time() {
+        return m_time;
+    }
 
+    public void set_time(Date time) {
+        this.m_time = time;
+    }
+
+    private Date m_time;
     private account m_account;
     private String m_descript;
     private double m_payment;

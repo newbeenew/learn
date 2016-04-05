@@ -1,6 +1,10 @@
 package d.ql.account;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.Vector;
+
+import DBManager.DBHelper;
 
 /**
  * Created by ql on 16-3-18.
@@ -27,12 +31,13 @@ public class Accounts {
     }
 
     public account get_account(String name){
-        for (int i=0;i < m_accountVec.size();++i) {
+        /*for (int i=0;i < m_accountVec.size();++i) {
             if (m_accountVec.elementAt(i).getName().equals(name)){
                 return m_accountVec.elementAt(i);
             }
-        }
+        }*/
         return null;
+
     }
     public static Accounts GetInstance(){
         return s_instance;
