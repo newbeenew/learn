@@ -156,7 +156,7 @@ public class AddCurrentActivity extends AppCompatActivity {
 
             current new_current = new current();
             new_current.set_account(select_account);
-            new_current.set_descript(decript_input.getText().toString());
+            new_current.set_description(decript_input.getText().toString());
             new_current.set_way(selected_way);
             new_current.set_payment(current);
           /*  currents.GetInstance().add_current(new_current);

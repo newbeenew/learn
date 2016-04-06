@@ -27,4 +27,14 @@ public class way {
 
     private String m_name;
     private WAY_TYPE m_type;
+
+    public int getDb_id() {
+        return db_id;
+    }
+
+    public void setDb_id(int db_id) {
+        this.db_id = db_id;
+    }
+
+    private int db_id;
 }

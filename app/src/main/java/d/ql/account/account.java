@@ -25,5 +25,15 @@ public class account {
 
     private String name;
     private double balance;
+
+    public int getDb_id() {
+        return db_id;
+    }
+
+    public void setDb_id(int db_id) {
+        this.db_id = db_id;
+    }
+
+    private int db_id;
 }
 

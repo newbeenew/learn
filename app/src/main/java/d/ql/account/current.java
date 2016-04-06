@@ -17,12 +17,12 @@ public class current {
         this.m_account = m_account;
     }
 
-    public String get_descript() {
-        return m_descript;
+    public String get_description() {
+        return m_description;
     }
 
-    public void set_descript(String m_descript) {
-        this.m_descript = m_descript;
+    public void set_description(String _description) {
+        this.m_description = _description;
     }
 
     public double get_payment() {
@@ -49,9 +49,18 @@ public class current {
         this.m_time = time;
     }
 
+    public int getDb_id() {
+        return db_id;
+    }
+
+    public void setDb_id(int db_id) {
+        this.db_id = db_id;
+    }
+
     private Date m_time;
     private account m_account;
-    private String m_descript;
+    private String m_description;
     private double m_payment;
     private way m_way;
+    private int db_id;
 }
