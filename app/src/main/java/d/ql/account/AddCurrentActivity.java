@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+
+import DBManager.DBManager;
 import d.ql.account.Accounts;
 import d.ql.account.Ways;
 
@@ -36,6 +38,7 @@ public class AddCurrentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_current);
 
+        m_dbManager = new DBManager(this);
         InitWaySpinner();
         InitSelectAccountSpinner();
 
@@ -59,7 +62,6 @@ public class AddCurrentActivity extends AppCompatActivity {
 
         set_time_fmt((EditText) findViewById(R.id.date), TIME_FMT.DATE);
         set_time_fmt((EditText) findViewById(R.id.time), TIME_FMT.TIME);
-
 
     }
 
@@ -85,13 +87,13 @@ public class AddCurrentActivity extends AppCompatActivity {
     private void InitWaySpinner()
     {
         Spinner way = (Spinner)findViewById(R.id.select_way);
-        Vector<way> ways = Ways.GetInstace().getWays();
-        if (ways.size() <= 0){
+        Vector<way> ways = m_dbManager.get_allWay();//Ways.GetInstace().getWays();
+        /*if (ways.size() <= 0){
             way consume_way = new way();
             consume_way.set_name("消费");
             consume_way.set_type(d.ql.account.way.WAY_TYPE.OUTGO);
             ways.add(consume_way);
-        }
+        }*/
 
         Spinner type = (Spinner)findViewById(R.id.type);
         String type_name = type.getSelectedItem().toString();
@@ -115,19 +117,19 @@ public class AddCurrentActivity extends AppCompatActivity {
     private void InitSelectAccountSpinner()
     {
         Spinner select_account = (Spinner)findViewById(R.id.select_account);
-        Vector<account> accounts = Accounts.GetInstance().getM_accountVec();
-        if (accounts.size() <= 0){
+        Vector<account> accounts = m_dbManager.get_allAccount();//Accounts.GetInstance().getM_accountVec();
+       /* if (accounts.size() <= 0){
             account crash_account_tmp = new account();
             crash_account_tmp.setName("现金");
             crash_account_tmp.setBalance(0);
             accounts.add(crash_account_tmp);
-        }
+        }*/
         String[] account_name_array = new String[accounts.size()];
         for(int i = 0; i < accounts.size(); ++i){
             account_name_array[i] = accounts.elementAt(i).getName();
         }
 
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, account_name_array);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, account_name_array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         select_account.setAdapter(adapter);
     }
@@ -141,11 +143,11 @@ public class AddCurrentActivity extends AppCompatActivity {
         public  boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             Spinner select_way_Spinner = (Spinner)findViewById(R.id.select_way);
             String way_name = select_way_Spinner.getSelectedItem().toString();
-            way selected_way = Ways.GetInstace().get_way(way_name);
+            way selected_way = m_dbManager.get_way(way_name);   //Ways.GetInstace().get_way(way_name);
 
             Spinner account = (Spinner)findViewById(R.id.select_account);
-            String account_way = account.getSelectedItem().toString();
-            account select_account = Accounts.GetInstance().get_account(account_way);
+            String account_name = account.getSelectedItem().toString();
+            account select_account =  m_dbManager.get_account(account_name);//Accounts.GetInstance().get_account(account_way);
 
            // EditText current_text = (EditText)findViewById(R.id.current_input);
             double current = Double.parseDouble(v.getText().toString());
@@ -159,6 +161,10 @@ public class AddCurrentActivity extends AppCompatActivity {
             new_current.set_description(decript_input.getText().toString());
             new_current.set_way(selected_way);
             new_current.set_payment(current);
+            m_dbManager.add_current(new_current);
+
+            select_account.setBalance(select_account.getBalance() - current);
+            m_dbManager.update_account(select_account);
           /*  currents.GetInstance().add_current(new_current);
             AddCurrentActivity.this.setResult(RESULT_OK);
             AddCurrentActivity.this.finish();*/
@@ -201,4 +207,6 @@ public class AddCurrentActivity extends AppCompatActivity {
             time_piker.show();
         }
     }
+
+    private DBManager m_dbManager;
 }

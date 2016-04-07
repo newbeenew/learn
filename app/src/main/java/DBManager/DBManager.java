@@ -30,6 +30,7 @@ public class DBManager {
         Cursor account_cursor = db.rawQuery("SELECT * FROM account WHERE NAME = ?", new String[]{name});
         if (account_cursor.getCount() != 0){
             assert account_cursor.getCount() == 1;
+            account_cursor.moveToNext();
             _account = new account();
             _account.setName(account_cursor.getString(0));
             _account.setBalance(account_cursor.getDouble(1));
@@ -71,6 +72,7 @@ public class DBManager {
         Cursor way_cursor = db.rawQuery("SELECT * FROM way WHERE NAME = ?", new String[]{name});
         if (way_cursor.getCount() != 0){
             assert way_cursor.getCount() == 1;
+            way_cursor.moveToNext();
             _way = new way();
             _way.set_name(name);
             int type = way_cursor.getInt(2);

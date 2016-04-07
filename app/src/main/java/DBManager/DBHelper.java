@@ -17,13 +17,16 @@ public class DBHelper extends SQLiteOpenHelper{
     }
 
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("CREATE TABLE IF NOT EXISTS account _id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, balance REAL)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS account( _id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, balance REAL)");
         db.execSQL("INSERT INTO account VALUES(NULL,?,?)", new Object[]{"现金",0});
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS way _id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, type INTEGER )");
-        db.execSQL("INSERT INTO way VALUES(NULL,?,?", new Object[]{"支出", way.WAY_TYPE.OUTGO});
+        db.execSQL("CREATE TABLE IF NOT EXISTS way( _id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, type INTEGER )");
+        db.execSQL("INSERT INTO way VALUES(NULL,?,?)", new Object[]{
+                "支出",
+                way.WAY_TYPE.OUTGO.ordinal()
+        });
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS current _id INTEGER PRIMARY KEY AUTOINCREMENT, time timestamp NOT NULL DEFAULT (datetime('now','localtime')," +
+        db.execSQL("CREATE TABLE IF NOT EXISTS current( _id INTEGER PRIMARY KEY AUTOINCREMENT, time timestamp NOT NULL DEFAULT (datetime('now','localtime'))," +
                 "  account_id INTEGER, way_id INTEGER, payment REAL, description TEXT )");
     }
 

@@ -1,6 +1,8 @@
 package d.ql.account;
 
 import java.util.Vector;
+
+import DBManager.DBManager;
 import d.ql.account.way;
 
 /**
@@ -12,8 +14,10 @@ public class Ways {
     {
         return  s_instance;
     }
-    public Vector<way> getWays() {
-        return m_ways;
+    public Vector<way> getWays(DBManager dbManager) {
+        /*return m_ways;*/
+        return dbManager.get_allWay();
+
     }
 
     public void add_way(way _way){
