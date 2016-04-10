@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.io.Reader;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -63,6 +64,31 @@ public class AddCurrentActivity extends AppCompatActivity {
         set_time_fmt((EditText) findViewById(R.id.date), TIME_FMT.DATE);
         set_time_fmt((EditText) findViewById(R.id.time), TIME_FMT.TIME);
 
+    }
+
+    //把日期转为字符串
+    public static String ConvertToString(Date date)
+    {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+        return df.format(date);
+    }
+    //把字符串转为日期
+    public static Date ConvertToDate(String strDate) throws Exception
+    {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.parse(strDate);
+    }
+
+    public static Date ConvertToTime(String strDate)
+    {
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return df.parse(strDate);
+        }catch (Exception e){
+            // do nothing
+            return null;
+        }
     }
 
     private enum TIME_FMT{
@@ -161,9 +187,17 @@ public class AddCurrentActivity extends AppCompatActivity {
             new_current.set_description(decript_input.getText().toString());
             new_current.set_way(selected_way);
             new_current.set_payment(current);
+
+            EditText date = (EditText)findViewById(R.id.date);
+            String str_date = date.getText().toString();
+
+            EditText time = (EditText)findViewById(R.id.time);
+            str_date += ' ';
+            str_date += time.getText().toString();
+
+            new_current.set_time(ConvertToTime(str_date));
             m_dbManager.add_current(new_current);
 
-            select_account.setBalance(select_account.getBalance() - current);
             m_dbManager.update_account(select_account);
           /*  currents.GetInstance().add_current(new_current);
             AddCurrentActivity.this.setResult(RESULT_OK);

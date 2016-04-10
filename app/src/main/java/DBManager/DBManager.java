@@ -32,8 +32,8 @@ public class DBManager {
             assert account_cursor.getCount() == 1;
             account_cursor.moveToNext();
             _account = new account();
-            _account.setName(account_cursor.getString(0));
-            _account.setBalance(account_cursor.getDouble(1));
+            _account.setName(account_cursor.getString(1));
+            _account.setBalance(account_cursor.getDouble(2));
         }
         account_cursor.close();
         return _account;
@@ -60,7 +60,7 @@ public class DBManager {
     }
 
     public void update_account( account _account){
-        db.execSQL("UPDATE account SET blance = ? , name = ? WHERE _id = ?", new String[]{
+        db.execSQL("UPDATE account SET balance = ? , name = ? WHERE _id = ?", new String[]{
                 _account.getName(),
                 Double.toString(_account.getBalance()),
                 Integer.toString(_account.getDb_id())
