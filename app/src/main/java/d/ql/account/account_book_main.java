@@ -1,11 +1,16 @@
 package d.ql.account;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Vector;
@@ -21,7 +26,20 @@ public class account_book_main extends AppCompatActivity {
 
         InitDataBase();
 
+        layoutInflater = LayoutInflater.from(this);
 
+        tabs = (FragmentTabHost)findViewById(android.R.id.tabhost);
+        tabs.setup(this, getSupportFragmentManager(), R.id.my_tabcontent);
+        tabs.getTabWidget().setDividerDrawable(null);
+
+        for(int i = 0; i < mFragmentTags.length; i++){
+            TabHost.TabSpec tabSpec = tabs.newTabSpec(mFragmentTags[i]).setIndicator(new TextView(this));
+            tabs.addTab(tabSpec, FragmentTab.class, null);
+            tabs.getTabWidget().getChildTabViewAt(i).setBackgroundColor(0xFFFF0000);
+        }
+
+
+        //添加后重新回到这里会触发
         Intent intent = getIntent();
         if (intent != null){
             boolean success = intent.getBooleanExtra(AddCurrentActivity.add_current_result, false);
@@ -31,11 +49,23 @@ public class account_book_main extends AppCompatActivity {
         }
     }
 
+    private LayoutInflater layoutInflater;
+
+
+    // 标题
+    private String mFragmentTags[] = {
+            "add",
+            "list",
+            "accounts",
+    };
+
     public void addCurrent(View view){
         Intent intent = new Intent(this, AddCurrentActivity.class);
         startActivity(intent);
 
     }
+
+    private FragmentTabHost tabs;
 
     private void InitDataBase(){
 
