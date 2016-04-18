@@ -1,6 +1,7 @@
 package d.ql.account;
 
-import android.app.Fragment;
+import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,8 +17,11 @@ import android.widget.Toast;
 import java.util.Vector;
 
 import DBManager.DBHelper;
+import DBManager.DBManager;
+import d.ql.account.dummy.DummyContent;
 
-public class account_book_main extends AppCompatActivity {
+public class account_book_main extends AppCompatActivity
+        implements current_list.OnListFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +37,8 @@ public class account_book_main extends AppCompatActivity {
         tabs.getTabWidget().setDividerDrawable(null);
 
         for(int i = 0; i < mFragmentTags.length; i++){
-            TabHost.TabSpec tabSpec = tabs.newTabSpec(mFragmentTags[i]).setIndicator(new TextView(this));
-            tabs.addTab(tabSpec, FragmentTab.class, null);
+            TabHost.TabSpec tabSpec = tabs.newTabSpec(mFragmentTags[i]).setIndicator(mFragmentTags[i]);
+            tabs.addTab(tabSpec, mFragmentClasss[i], null);
             tabs.getTabWidget().getChildTabViewAt(i).setBackgroundColor(0xFFFF0000);
         }
 
@@ -58,6 +62,11 @@ public class account_book_main extends AppCompatActivity {
             "list",
             "accounts",
     };
+    private Class mFragmentClasss[] = {
+            FragmentTab.class,
+            current_list.class,
+            FragmentTab.class,
+    };
 
     public void addCurrent(View view){
         Intent intent = new Intent(this, AddCurrentActivity.class);
@@ -73,7 +82,11 @@ public class account_book_main extends AppCompatActivity {
 
 
         //db.close();
-        DBHelper helper = new DBHelper(this);
+        DBManager dbManager = new DBManager(this);
+    }
+
+    public void onFragmentInteraction(Uri uri){
+        //you can leave it empty
     }
 
 /*
@@ -88,5 +101,10 @@ public class account_book_main extends AppCompatActivity {
     }
 
     private Vector<account> m_accountVector;*/
-   final static private String database_name = "account_book.db";
+
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
 }

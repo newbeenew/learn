@@ -1,5 +1,6 @@
 package d.ql.account;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,4 +32,5 @@ public class FragmentTab extends Fragment{
     public void onDestroyView(){
         super.onDestroyView();
     }
+
 }

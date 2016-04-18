@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 import d.ql.account.account;
@@ -34,6 +35,7 @@ public class DBManager {
             _account = new account();
             _account.setName(account_cursor.getString(1));
             _account.setBalance(account_cursor.getDouble(2));
+            _account.setDb_id(account_cursor.getInt(account_cursor.getColumnIndex("_id")));
         }
         account_cursor.close();
         return _account;
@@ -61,8 +63,8 @@ public class DBManager {
 
     public void update_account( account _account){
         db.execSQL("UPDATE account SET balance = ? , name = ? WHERE _id = ?", new String[]{
-                _account.getName(),
                 Double.toString(_account.getBalance()),
+                _account.getName(),
                 Integer.toString(_account.getDb_id())
         });
     }
@@ -74,9 +76,10 @@ public class DBManager {
             assert way_cursor.getCount() == 1;
             way_cursor.moveToNext();
             _way = new way();
-            _way.set_name(name);
+            _way.set_name(way_cursor.getString(way_cursor.getColumnIndex("name")));
             int type = way_cursor.getInt(2);
             _way.set_type(way.WAY_TYPE.values()[type]);
+            _way.setDb_id(way_cursor.getInt(way_cursor.getColumnIndex("_id")));
 
         }
         way_cursor.close();
@@ -103,7 +106,7 @@ public class DBManager {
                 });
     }
 
-    public void update_wat(way _way){
+    public void update_way(way _way){
         db.execSQL("UPDATE way SET name = ?, type = ? WHERE _id = ?",
                 new String[]{
                         _way.get_name(),
@@ -114,28 +117,33 @@ public class DBManager {
 
     public Vector<current >get_currents(){
         Vector<current> all_current = new Vector<>(0);
-        Cursor currents_cursor = db.rawQuery("SELECT current.*,way.*, account.*, account.balance FROM current LEFT JOIN ON current.way_id" +
-                " = way._id LEFT JOIN ON current.account_id = account._id",null);
+        Cursor currents_cursor = db.rawQuery("SELECT current._id , current.payment, current.time,current.description, current.way_id,current.account_id, " +
+                "way.name AS way_name, way.type , account.name AS account_name, account.balance FROM  current LEFT OUTER JOIN way ON current.way_id" +
+                " = way._id LEFT OUTER JOIN account ON current.account_id = account._id",null);
         while (currents_cursor.moveToNext()){
             current _current = new current();
-            _current.set_description(currents_cursor.getString(currents_cursor.getColumnIndex("descript")));
+            _current.set_description(currents_cursor.getString(currents_cursor.getColumnIndex("description")));
 
             account _account = new account();
-            _account.setDb_id(currents_cursor.getInt(currents_cursor.getColumnIndex("account._id")));
-            _account.setName(currents_cursor.getString(currents_cursor.getColumnIndex("account.name")));
-            _account.setBalance(currents_cursor.getInt(currents_cursor.getColumnIndex("account.balance")));
+            String s = currents_cursor.getString(currents_cursor.getColumnIndex("account_id"));
+            _account.setDb_id(currents_cursor.getInt(currents_cursor.getColumnIndex("account_id")));
+            int i = currents_cursor.getColumnIndex("account_name");
+            s = currents_cursor.getString(i);
+            _account.setName(currents_cursor.getString(currents_cursor.getColumnIndex("account_name")));
+            _account.setBalance(currents_cursor.getDouble(currents_cursor.getColumnIndex("account.balance")));
             _current.set_account(_account);
 
             way _way = new way();
-            _way.setDb_id(currents_cursor.getInt(currents_cursor.getColumnIndex("way._id")));
-            _way.set_name(currents_cursor.getString(currents_cursor.getColumnIndex("way.name")));
+            _way.set_name(currents_cursor.getString(currents_cursor.getColumnIndex("way_name")));
             _way.set_type(way.WAY_TYPE.values()[currents_cursor.getInt(currents_cursor.getColumnIndex("way.type"))]);
             _current.set_way(_way);
 
             _current.set_payment(currents_cursor.getDouble(currents_cursor.getColumnIndex("current.payment")));
 
-            String timeStamp = currents_cursor.getString(currents_cursor.getColumnIndex("current.timestamp"));
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String timeStamp = currents_cursor.getString(currents_cursor.getColumnIndex("current.time"));
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            long lcc = Long.valueOf(timeStamp);
+            _current.set_time(new Date(lcc));
             try {
                 _current.set_time(format.parse(timeStamp));
             }catch (ParseException e) {
