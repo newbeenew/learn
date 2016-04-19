@@ -11,7 +11,7 @@ import java.util.Map;
  * <p/>
  * TODO: Replace all uses of this class before publishing your app.
  */
-public class DummyContent {
+public class DummyCurrents {
 
     /**
      * An array of sample (dummy) items.
@@ -23,14 +23,10 @@ public class DummyContent {
      */
     public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
-    private static final int COUNT = 25;
-
-  /*  static {
-        // Add some sample items.
-        for (int i = 1; i <= COUNT; i++) {
-            addItem(createDummyItem(i));
-        }
-    }*/
+    public static void clear(){
+        ITEMS.clear();
+        ITEM_MAP.clear();
+    }
 
     public static void addItem(DummyItem item) {
         ITEMS.add(item);

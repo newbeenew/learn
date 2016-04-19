@@ -31,6 +31,7 @@ import java.util.Vector;
 import DBManager.DBManager;
 import d.ql.account.Accounts;
 import d.ql.account.Ways;
+import util.Util;
 
 public class AddCurrentActivity extends AppCompatActivity {
 
@@ -66,30 +67,7 @@ public class AddCurrentActivity extends AppCompatActivity {
 
     }
 
-    //把日期转为字符串
-    public static String ConvertToString(Date date)
-    {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
-        return df.format(date);
-    }
-    //把字符串转为日期
-    public static Date ConvertToDate(String strDate) throws Exception
-    {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        return df.parse(strDate);
-    }
-
-    public static Date ConvertToTime(String strDate)
-    {
-        try {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            return df.parse(strDate);
-        }catch (Exception e){
-            // do nothing
-            return null;
-        }
-    }
 
     private enum TIME_FMT{
         DATE,
@@ -195,7 +173,7 @@ public class AddCurrentActivity extends AppCompatActivity {
             str_date += ' ';
             str_date += time.getText().toString();
 
-            new_current.set_time(ConvertToTime(str_date));
+            new_current.set_time(Util.ConvertToTime(str_date));
             m_dbManager.add_current(new_current);
 
             m_dbManager.update_account(select_account);

@@ -10,12 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import DBManager.DBManager;
-import d.ql.account.dummy.DummyCurrents;
-import d.ql.account.dummy.DummyCurrents.DummyItem;
-import util.Util;
-
 import java.util.Vector;
+
+import DBManager.DBManager;
+import d.ql.account.dummy.DummyAccounts;
 
 /**
  * A fragment representing a list of Items.
@@ -23,7 +21,7 @@ import java.util.Vector;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class current_list extends Fragment{
+public class account_list extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -35,13 +33,13 @@ public class current_list extends Fragment{
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public current_list() {
+    public account_list() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static current_list newInstance(int columnCount) {
-        current_list fragment = new current_list();
+    public static account_list newInstance(int columnCount) {
+        account_list fragment = new account_list();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -60,7 +58,7 @@ public class current_list extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_current_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_account_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -72,31 +70,26 @@ public class current_list extends Fragment{
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            DummyCurrents.clear();
-            getCurrentList();
+            DummyAccounts.clear();
+            getAccountList();
 
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyCurrents.ITEMS, mListener));
+            recyclerView.setAdapter(new MyaccountRecyclerViewAdapter(DummyAccounts.ITEMS, mListener));
         }
         return view;
     }
 
 
-    private void getCurrentList(){
+    private  void getAccountList(){
         DBManager dbManager = new DBManager(getContext());
-        Vector<current> currents = dbManager.get_currents();
-        for (int i =0; i < currents.size(); ++i){
-            current cu = currents.elementAt(i);
-            if(cu.get_account().getName() == null){
+        Vector<account> _accounts = dbManager.get_allAccount();
+        for (int i =0; i < _accounts.size(); ++i){
+            account _ac = _accounts.elementAt(i);
+            if(_ac.getName() == null){
                 continue;
             }
-            DummyItem item = new DummyItem(
-                    Util.ConvertToDateString(cu.get_time()),
-                    cu.get_way().get_name() + Double.toString(cu.get_payment()),
-                    cu.get_description());
-            DummyCurrents.addItem(item);
+            DummyAccounts.addItem(_ac);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -126,6 +119,6 @@ public class current_list extends Fragment{
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-            void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(account item);
     }
 }

@@ -23,6 +23,7 @@ public class account {
         this.balance = balance;
     }
 
+    public String toString(){return Double.toString(balance);}
     private String name;
     private double balance;
 

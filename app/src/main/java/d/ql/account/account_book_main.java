@@ -1,27 +1,20 @@
 package d.ql.account;
 
 import android.net.Uri;
-import android.support.v4.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TabHost;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Vector;
-
-import DBManager.DBHelper;
 import DBManager.DBManager;
-import d.ql.account.dummy.DummyContent;
+import d.ql.account.dummy.DummyCurrents;
 
 public class account_book_main extends AppCompatActivity
-        implements current_list.OnListFragmentInteractionListener{
+        implements current_list.OnListFragmentInteractionListener,account_list.OnListFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +58,7 @@ public class account_book_main extends AppCompatActivity
     private Class mFragmentClasss[] = {
             FragmentTab.class,
             current_list.class,
-            FragmentTab.class,
+            account_list.class,
     };
 
     public void addCurrent(View view){
@@ -104,7 +97,12 @@ public class account_book_main extends AppCompatActivity
 
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(DummyCurrents.DummyItem item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(account item) {
 
     }
 }
