@@ -4,17 +4,22 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -90,7 +95,7 @@ public class AddCurrentActivity extends AppCompatActivity {
 
     private void InitWaySpinner()
     {
-        Spinner way = (Spinner)findViewById(R.id.select_way);
+        final Spinner way = (Spinner)findViewById(R.id.select_way);
         Vector<way> ways = m_dbManager.get_allWay();//Ways.GetInstace().getWays();
         /*if (ways.size() <= 0){
             way consume_way = new way();
@@ -99,23 +104,85 @@ public class AddCurrentActivity extends AppCompatActivity {
             ways.add(consume_way);
         }*/
 
-        Spinner type = (Spinner)findViewById(R.id.type);
+       /* Spinner type = (Spinner)findViewById(R.id.type);
         String type_name = type.getSelectedItem().toString();
         d.ql.account.way.WAY_TYPE eType = d.ql.account.way.WAY_TYPE.OUTGO;
         if (type_name.equals("收入") ) {
             eType = d.ql.account.way.WAY_TYPE.INCOME;
-        }
+        }*/
 
-        String[] ways_array = new String[ways.size()];
+
+        Vector<String> ways_vec = new Vector<String>(0);
         for(int i = 0; i < ways.size(); ++i){
-            if (eType == ways.elementAt(i).get_type()) {
-                ways_array[i] = ways.elementAt(i).get_name();
+            if (null != ways.elementAt(i).get_name()) {
+                ways_vec.add(ways.elementAt(i).get_name());
             }
         }
+        ways_vec.add("add new way");
+        final String[] ways_array = new String[ways_vec.size()];
+        ways_vec.copyInto(ways_array);
 
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, ways_array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         way.setAdapter(adapter);
+
+        way.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == (ways_array.length - 1)) {
+                    LayoutInflater inflater = getLayoutInflater();
+                    ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.add_way_dialog, (ViewGroup) findViewById(R.id.add_way_dialog));
+                    ClickListener listener = new ClickListener(layout, way);
+                    new AlertDialog.Builder(way.getContext())
+                            .setTitle("add_way")
+                            .setView(layout)
+                            .setPositiveButton("确定",listener)
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    way.setSelection(0);
+                                }
+                            })
+                            .show();
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    class ClickListener implements DialogInterface.OnClickListener {
+        private ViewGroup layout;
+        private Spinner spinner;
+        public ClickListener(ViewGroup _layout, Spinner _spinner){
+            layout = _layout;
+            spinner = _spinner;
+        }
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            setContentView(R.layout.add_way_dialog);
+            way new_way = new way();
+
+            EditText way_name = (EditText) layout.findViewById(R.id.add_way_name);
+            String str_way_name = way_name.getText().toString();
+            if (0 < str_way_name.length()) {
+                new_way.set_name(way_name.getText().toString());
+            } else {
+                spinner.setSelection(0);
+                return;
+            }
+
+            Spinner way_type = (Spinner) layout.findViewById(R.id.add_way_type);
+            if (way_type.getSelectedItem().toString().equals("收入")) {
+                new_way.set_type(d.ql.account.way.WAY_TYPE.INCOME);
+            } else {
+                new_way.set_type(d.ql.account.way.WAY_TYPE.OUTGO);
+            }
+
+            m_dbManager.add_way(new_way);
+            spinner.setSelection(spinner.getCount() - 1);
+        }
     }
 
     private void InitSelectAccountSpinner()
@@ -155,8 +222,13 @@ public class AddCurrentActivity extends AppCompatActivity {
 
            // EditText current_text = (EditText)findViewById(R.id.current_input);
             double current = Double.parseDouble(v.getText().toString());
-            double new_Balance = select_account.getBalance() - current;
-            select_account.setBalance(new_Balance);
+            if (selected_way.get_type() == way.WAY_TYPE.INCOME){
+                select_account.setBalance( select_account.getBalance() + current);
+            }
+            else{
+                select_account.setBalance( select_account.getBalance() - current);
+            }
+
 
             EditText decript_input = (EditText)findViewById(R.id.comment);
 

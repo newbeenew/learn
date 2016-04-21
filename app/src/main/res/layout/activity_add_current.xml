@@ -10,23 +10,23 @@
     android:orientation="vertical"
     tools:context="d.ql.account.AddCurrentActivity">
 
-    <Spinner
+    <!--<Spinner
         android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:entries="@array/type"/>
+        android:entries="@array/type"/-->
 
     <EditText
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/type"
+
         android:editable="false"
         android:onClick="change_time"/>
 
     <EditText
         android:id="@+id/time"
-        android:layout_below="@id/type"
+
         android:layout_toRightOf="@id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

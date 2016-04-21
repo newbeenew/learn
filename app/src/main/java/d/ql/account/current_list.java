@@ -91,7 +91,7 @@ public class current_list extends Fragment{
             }
             DummyItem item = new DummyItem(
                     Util.ConvertToDateString(cu.get_time()),
-                    cu.get_way().get_name() + Double.toString(cu.get_payment()),
+                    cu.get_way().get_name() + "\n" + (cu.get_way().get_type() == way.WAY_TYPE.INCOME?"+":"-") +Double.toString(cu.get_payment()),
                     cu.get_description());
             DummyCurrents.addItem(item);
         }
