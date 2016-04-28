@@ -21,6 +21,12 @@ public class MyaccountRecyclerViewAdapter extends RecyclerView.Adapter<Myaccount
     private final List<account> mValues;
     private final OnListFragmentInteractionListener mListener;
 
+   /* public interface OnItemClickLitener
+    {
+        void onItemClick(View view, int position);
+        void onItemLongClick(View view , int position);
+    }*/
+
     public MyaccountRecyclerViewAdapter(List<account> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;

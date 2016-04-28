@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import d.ql.account.account;
+import d.ql.account.way;
+
 /**
  * Helper class for providing sample content for user interfaces created by
  * Android template wizards.
@@ -32,10 +35,10 @@ public class DummyCurrents {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
-
+/*
     private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
-    }
+        //return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+    }*/
 
     private static String makeDetails(int position) {
         StringBuilder builder = new StringBuilder();
@@ -53,16 +56,25 @@ public class DummyCurrents {
         public final String id;
         public final String content;
         public final String details;
+        public account _account;
+        public way _way;
+        public boolean bDetails ;
 
-        public DummyItem(String id, String content, String details) {
+        public DummyItem(String id, String content, String details, account _account, way _way) {
             this.id = id;
             this.content = content;
             this.details = details;
+            bDetails = false;
+            this._account =_account;
+            this._way = _way;
         }
 
         @Override
         public String toString() {
-            return content;
+            if (!bDetails)
+                return content;
+            else
+                return content + "\n" + details + "\n" + _account.getName() + "\n" + (_way.get_type() == way.WAY_TYPE.INCOME?"收入:":"支出:") + _way.get_name();
         }
     }
 }

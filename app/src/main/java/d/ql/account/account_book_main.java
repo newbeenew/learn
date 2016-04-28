@@ -31,7 +31,7 @@ public class account_book_main extends AppCompatActivity
 
         for(int i = 0; i < mFragmentTags.length; i++){
             TabHost.TabSpec tabSpec = tabs.newTabSpec(mFragmentTags[i]).setIndicator(mFragmentTags[i]);
-            tabs.addTab(tabSpec, mFragmentClasss[i], null);
+            tabs.addTab(tabSpec, mFragmentClass[i], null);
             tabs.getTabWidget().getChildTabViewAt(i).setBackgroundColor(0xFFFF0000);
         }
 
@@ -55,7 +55,7 @@ public class account_book_main extends AppCompatActivity
             "list",
             "accounts",
     };
-    private Class mFragmentClasss[] = {
+    private Class mFragmentClass[] = {
             FragmentTab.class,
             current_list.class,
             account_list.class,
@@ -98,11 +98,15 @@ public class account_book_main extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(DummyCurrents.DummyItem item) {
-
+        item.bDetails = !item.bDetails;
     }
 
     @Override
     public void onListFragmentInteraction(account item) {
-
+        Intent intent = new Intent(this, accountDetailActivity.class);
+        intent.putExtra("account_name", item.getName());
+        intent.putExtra("account_balance", item.getBalance());
+        intent.putExtra("account_db_id",item.getDb_id());
+        startActivity(intent);
     }
 }

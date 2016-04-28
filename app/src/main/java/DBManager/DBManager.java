@@ -48,6 +48,7 @@ public class DBManager {
             account _account = new account();
             _account.setName(accounts_cursor.getString(1));
             _account.setBalance(accounts_cursor.getDouble(2));
+            _account.setDb_id(accounts_cursor.getInt(accounts_cursor.getColumnIndex("_id")));
             accounts.add(_account);
         }
         accounts_cursor.close();
@@ -65,6 +66,12 @@ public class DBManager {
         db.execSQL("UPDATE account SET balance = ? , name = ? WHERE _id = ?", new String[]{
                 Double.toString(_account.getBalance()),
                 _account.getName(),
+                Integer.toString(_account.getDb_id())
+        });
+    }
+
+    public void delete_account(account _account){
+        db.execSQL("DELETE FROM account WHERE _id = ?",new String[]{
                 Integer.toString(_account.getDb_id())
         });
     }

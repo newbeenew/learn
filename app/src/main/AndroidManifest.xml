@@ -15,10 +15,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddCurrentActivity"
-            android:parentActivityName=".account_book_main">
-
-        </activity>
+        <activity
+            android:name=".AddCurrentActivity"
+            android:parentActivityName=".account_book_main"></activity>
+        <activity
+            android:name=".accountDetailActivity"
+            android:label="@string/title_activity_account_detail"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

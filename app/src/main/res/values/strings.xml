@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">account</string>
     <string name="Add">记一笔</string>
+    <string name="name">name</string>
+    <string name="balance">balance</string>
+    <string name="account_detail_name">account_name</string>
+    <string name="account_account_balance">account_balance</string>
+    <string name="account_account_db_id">account_db_id</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_account_detail">accountDetailActivity</string>
 </resources>

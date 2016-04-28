@@ -55,7 +55,6 @@ public class AddCurrentActivity extends AppCompatActivity {
         timer.schedule(new TimerTask() {
                            public void run() {
                                EditText editText = (EditText) findViewById(R.id.current_input);
-                               editText.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
                                InputMethodManager inputManager =
                                        (InputMethodManager) editText.getContext().
                                                getSystemService(Context.INPUT_METHOD_SERVICE);

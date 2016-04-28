@@ -1,14 +1,18 @@
 package d.ql.account;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import java.util.Vector;
 
@@ -53,6 +57,8 @@ public class account_list extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -105,6 +111,38 @@ public class account_list extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case 1:
+                add_account();
+        }
+        return true;
+    }
+
+    private final void add_account(){
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.account_dialog,  (ViewGroup)(getActivity().findViewById(R.id.account_dialog)));
+        new AlertDialog.Builder(getContext())
+                .setTitle("add account")
+                .setView(layout)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DBManager dbManager = new DBManager(getContext());
+                        account new_account = new account();
+                        EditText et_name = (EditText)layout.findViewById(R.id.account_name);
+                        new_account.setName(et_name.getText().toString());
+
+                        EditText et_balance = (EditText)layout.findViewById(R.id.account_balance);
+                        new_account.setBalance(Double.parseDouble(et_balance.getText().toString()));
+                        dbManager.add_account(new_account);
+                    }
+                })
+                .setNegativeButton("取消",null)
+                .show();
     }
 
     /**
