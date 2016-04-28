@@ -9,6 +9,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +80,8 @@ public class account_list extends Fragment {
 
             DummyAccounts.clear();
             getAccountList();
+            setHasOptionsMenu(true);
+
 
             recyclerView.setAdapter(new MyaccountRecyclerViewAdapter(DummyAccounts.ITEMS, mListener));
         }
@@ -113,6 +117,9 @@ public class account_list extends Fragment {
         mListener = null;
     }
 
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem item = menu.add(1,Menu.FIRST,Menu.FIRST,"add account");
+    }
 
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
