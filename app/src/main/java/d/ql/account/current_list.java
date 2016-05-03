@@ -60,6 +60,7 @@ public class current_list extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_current_list, container, false);
 
         // Set the adapter
@@ -75,8 +76,9 @@ public class current_list extends Fragment{
             DummyCurrents.clear();
             getCurrentList();
 
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyCurrents.ITEMS, mListener));
+            recyclerView.setAdapter(new CurrentRecyclerViewAdapter(DummyCurrents.ITEMS, mListener));
         }
+
         return view;
     }
 

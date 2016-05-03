@@ -254,6 +254,7 @@ public class AddCurrentActivity extends AppCompatActivity {
             Intent intent = new Intent(activity,account_book_main.class);
             intent.putExtra(add_current_result,true);
             startActivity(intent);
+            AddCurrentActivity.this.finish();
             return true;
         }
         private AddCurrentActivity activity;

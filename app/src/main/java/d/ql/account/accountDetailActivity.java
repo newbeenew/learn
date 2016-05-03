@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import DBManager.DBManager;
 
@@ -67,6 +68,7 @@ public class accountDetailActivity extends AppCompatActivity {
                         dbManager.update_account(_account);
 
                         SetAccountView();
+                        Toast.makeText(accountDetailActivity.this, "修改成功", Toast.LENGTH_LONG).show();
                     }
                 })
                 .setNegativeButton("取消",null)
@@ -82,7 +84,6 @@ public class accountDetailActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         DBManager dbManager = new DBManager(accountDetailActivity.this);
                         dbManager.delete_account(_account);
-                        SetAccountView();
                         accountDetailActivity.this.finish();
                     }
                 })
