@@ -28,13 +28,25 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_current, parent, false);
-        return new ViewHolder(view);
+
+        View view;
+        if (viewType == BODY_VIEW) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.fragment_current, parent, false);
+        }
+        else  {
+            view =  LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.current_list_header, parent, false);
+        }
+
+        return new ViewHolder(view,viewType);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        if (holder.ViewType == HEAD_VIEW){
+            return;
+        }
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).toString());
@@ -57,17 +69,31 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
         return mValues.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return HEAD_VIEW;
+        }else{
+            return BODY_VIEW ;
+        }
+    }
+
+    private final int HEAD_VIEW = 0;
+    private final int BODY_VIEW = 1;
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
+        public final int ViewType;
         public DummyItem mItem;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view,int ViewType) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);
             mContentView = (TextView) view.findViewById(R.id.content);
+            this.ViewType = ViewType;
         }
 
         @Override
