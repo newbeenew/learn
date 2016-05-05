@@ -1,12 +1,14 @@
 package d.ql.account.dummy;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import d.ql.account.account;
 import d.ql.account.way;
+import util.Util;
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -24,16 +26,16 @@ public class DummyCurrents {
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+   // public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
 
     public static void clear(){
         ITEMS.clear();
-        ITEM_MAP.clear();
+       // ITEM_MAP.clear();
     }
 
     public static void addItem(DummyItem item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+      //  ITEM_MAP.put(item.time, item);
     }
 /*
     private static DummyItem createDummyItem(int position) {
@@ -53,20 +55,29 @@ public class DummyCurrents {
      * A dummy item representing a piece of content.
      */
     public static class DummyItem {
-        public final String id;
+        private final Date time;
         public final String content;
         public final String details;
         public account _account;
         public way _way;
         public boolean bDetails ;
 
-        public DummyItem(String id, String content, String details, account _account, way _way) {
-            this.id = id;
+        public DummyItem(Date time, String content, String details, account _account, way _way) {
+            this.time = time;
             this.content = content;
             this.details = details;
             bDetails = false;
             this._account =_account;
             this._way = _way;
+        }
+
+        public String GetTime(){
+            if (bDetails){
+                return  Util.ConvertToDetailTimeString(time).replace(' ', '\n');
+            }
+            else{
+                return Util.ConvertToDateString(time);
+            }
         }
 
         @Override

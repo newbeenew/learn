@@ -103,7 +103,7 @@ public class AddCurrentActivity extends AppCompatActivity {
             ways.add(consume_way);
         }*/
 
-       /* Spinner type = (Spinner)findViewById(R.id.type);
+       /* Spinner type = (Spinner)findViewById(R.time.type);
         String type_name = type.getSelectedItem().toString();
         d.ql.account.way.WAY_TYPE eType = d.ql.account.way.WAY_TYPE.OUTGO;
         if (type_name.equals("收入") ) {
@@ -219,7 +219,7 @@ public class AddCurrentActivity extends AppCompatActivity {
             String account_name = account.getSelectedItem().toString();
             account select_account =  m_dbManager.get_account(account_name);//Accounts.GetInstance().get_account(account_way);
 
-           // EditText current_text = (EditText)findViewById(R.id.current_input);
+           // EditText current_text = (EditText)findViewById(R.time.current_input);
             double current = Double.parseDouble(v.getText().toString());
             if (selected_way.get_type() == way.WAY_TYPE.INCOME){
                 select_account.setBalance( select_account.getBalance() + current);

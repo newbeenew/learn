@@ -14,13 +14,13 @@
          android:layout_width="0dp"
          android:layout_height="wrap_content"
          android:layout_weight="0.3"
-         android:id="@+id/current_start_date"></DatePicker>
+         android:time="@+time/current_start_date"></DatePicker>
 
      <DatePicker
          android:layout_width="0dp"
          android:layout_height="wrap_content"
          android:layout_weight="0.3"
-         android:id="@+id/current_end_date"></DatePicker>
+         android:time="@+time/current_end_date"></DatePicker>
 
      <EditText
          android:layout_width="0dp"

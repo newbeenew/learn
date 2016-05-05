@@ -11,7 +11,7 @@
     tools:context="d.ql.account.AddCurrentActivity">
 
     <!--<Spinner
-        android:id="@+id/type"
+        android:time="@+time/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:entries="@array/type"/-->

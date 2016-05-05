@@ -1,14 +1,20 @@
 package d.ql.account;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import d.ql.account.current_list.OnListFragmentInteractionListener;
 import d.ql.account.dummy.DummyCurrents.DummyItem;
+import util.Util;
 
+
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +43,13 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
         else  {
             view =  LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.current_list_header, parent, false);
+
+            final Calendar c = Calendar.getInstance();
+            EditText startDate = (EditText)view.findViewById(R.id.current_start_date);
+            startDate.setText(Integer.toString(c.get(Calendar.YEAR)) + "-" + Integer.toString(c.get(Calendar.MONTH) + 1) + "-" + "1");
+
+            EditText endDate = (EditText)view.findViewById(R.id.current_end_date);
+            endDate.setText(Util.ConvertToDateString(c.getTime()));
         }
 
         return new ViewHolder(view,viewType);
@@ -48,7 +61,7 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
             return;
         }
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
+        holder.mTimeView.setText(mValues.get(position).GetTime());
         holder.mContentView.setText(mValues.get(position).toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +72,7 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                     holder.mContentView.setText(holder.mItem.toString());
+                    holder.mTimeView.setText(holder.mItem.GetTime());
                 }
             }
         });
@@ -83,7 +97,7 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
+        public final TextView mTimeView;
         public final TextView mContentView;
         public final int ViewType;
         public DummyItem mItem;
@@ -91,7 +105,7 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
         public ViewHolder(View view,int ViewType) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
+            mTimeView = (TextView) view.findViewById(R.id.id);
             mContentView = (TextView) view.findViewById(R.id.content);
             this.ViewType = ViewType;
         }

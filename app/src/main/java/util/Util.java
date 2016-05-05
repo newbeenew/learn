@@ -15,6 +15,13 @@ public class Util {
 
         return df.format(date);
     }
+
+    public static String ConvertToDetailTimeString(Date time)
+    {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        return df.format(time);
+    }
     //把字符串转为日期
     public static Date ConvertToDate(String strDate) throws Exception
     {
