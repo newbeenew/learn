@@ -66,8 +66,8 @@ public class AddCurrentActivity extends AppCompatActivity {
                 998);
 
 
-        set_time_fmt((EditText) findViewById(R.id.date), TIME_FMT.DATE);
-        set_time_fmt((EditText) findViewById(R.id.time), TIME_FMT.TIME);
+        set_time_fmt((TextView) findViewById(R.id.date), TIME_FMT.DATE);
+        set_time_fmt((TextView) findViewById(R.id.time), TIME_FMT.TIME);
 
     }
 
@@ -77,7 +77,7 @@ public class AddCurrentActivity extends AppCompatActivity {
         DATE,
         TIME
     }
-    private void set_time_fmt( EditText edit, TIME_FMT fmt){
+    private void set_time_fmt( TextView edit, TIME_FMT fmt){
 
         SimpleDateFormat time_fmt;
         if(fmt == TIME_FMT.TIME){
@@ -163,7 +163,7 @@ public class AddCurrentActivity extends AppCompatActivity {
             setContentView(R.layout.add_way_dialog);
             way new_way = new way();
 
-            EditText way_name = (EditText) layout.findViewById(R.id.add_way_name);
+            TextView way_name = (TextView) layout.findViewById(R.id.add_way_name);
             String str_way_name = way_name.getText().toString();
             if (0 < str_way_name.length()) {
                 new_way.set_name(way_name.getText().toString());
@@ -237,10 +237,10 @@ public class AddCurrentActivity extends AppCompatActivity {
             new_current.set_way(selected_way);
             new_current.set_payment(current);
 
-            EditText date = (EditText)findViewById(R.id.date);
+            TextView date = (TextView)findViewById(R.id.date);
             String str_date = date.getText().toString();
 
-            EditText time = (EditText)findViewById(R.id.time);
+            TextView time = (TextView)findViewById(R.id.time);
             str_date += ' ';
             str_date += time.getText().toString();
 
@@ -271,7 +271,7 @@ public class AddCurrentActivity extends AppCompatActivity {
 
     public void change_time(View view) {
         final Calendar c = Calendar.getInstance();
-        final EditText edit = (EditText)view;
+        final TextView edit = (TextView)view;
         if(edit.getId() == R.id.date){
             DatePickerDialog date_piker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override

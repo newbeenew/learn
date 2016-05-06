@@ -45,10 +45,10 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
                     .inflate(R.layout.current_list_header, parent, false);
 
             final Calendar c = Calendar.getInstance();
-            EditText startDate = (EditText)view.findViewById(R.id.current_start_date);
+            TextView startDate = (TextView)view.findViewById(R.id.current_start_date);
             startDate.setText(Integer.toString(c.get(Calendar.YEAR)) + "-" + Integer.toString(c.get(Calendar.MONTH) + 1) + "-" + "1");
 
-            EditText endDate = (EditText)view.findViewById(R.id.current_end_date);
+            TextView endDate = (TextView)view.findViewById(R.id.current_end_date);
             endDate.setText(Util.ConvertToDateString(c.getTime()));
         }
 

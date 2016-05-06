@@ -13,13 +13,13 @@
     tools:showIn="@layout/activity_account_detail"
     android:orientation="vertical">
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:editable="false"
         android:id="@+id/account_detail_name"/>
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:editable="false"

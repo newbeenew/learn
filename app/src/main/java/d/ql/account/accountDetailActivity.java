@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import DBManager.DBManager;
@@ -35,10 +36,10 @@ public class accountDetailActivity extends AppCompatActivity {
     }
 
     private void SetAccountView(){
-        EditText et_name = (EditText)findViewById(R.id.account_detail_name);
+        TextView et_name = (TextView)findViewById(R.id.account_detail_name);
         et_name.setText(_account.getName());
 
-        EditText et_balance = (EditText)findViewById(R.id.account_detail_balance);
+        TextView et_balance = (TextView)findViewById(R.id.account_detail_balance);
         et_balance.setText(Double.toString(_account.getBalance()));
     }
 

@@ -4,21 +4,21 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
         android:id="@+id/current_start_date"
-        android:editable="false"></EditText>
+        android:editable="false"></TextView>
 
-   <EditText
+   <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
         android:id="@+id/current_end_date"
-        android:editable="false"></EditText>
+        android:editable="false"></TextView>
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.4"
