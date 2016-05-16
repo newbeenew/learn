@@ -270,25 +270,12 @@ public class AddCurrentActivity extends AppCompatActivity {
     }
 
     public void change_time(View view) {
-        final Calendar c = Calendar.getInstance();
         final TextView edit = (TextView)view;
         if(edit.getId() == R.id.date){
-            DatePickerDialog date_piker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    edit.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
-                }
-            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH),c.get(Calendar.DATE));
-            date_piker.show();
+            Util.ChangeDataText(this, view);
         }
         else if(edit.getId() == R.id.time){
-            TimePickerDialog time_piker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-                @Override
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    edit.setText(hourOfDay + ":" + minute + "00");
-                }
-            }, c.get(Calendar.HOUR), c.get(Calendar.MINUTE),true);
-            time_piker.show();
+            Util.ChangeTimeText(this, view);
         }
     }
 

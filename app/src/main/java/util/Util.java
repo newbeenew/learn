@@ -1,8 +1,19 @@
 package util;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+
+import d.ql.account.R;
 
 /**
  * Created by ql on 16-4-19.
@@ -38,5 +49,33 @@ public class Util {
             // do nothing
             return null;
         }
+    }
+
+    public static void ChangeDataText(Context context, View view) {
+        final Calendar c = Calendar.getInstance();
+        final TextView edit = (TextView)view;
+
+            DatePickerDialog date_piker = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    edit.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                }
+            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH),c.get(Calendar.DATE));
+            date_piker.show();
+
+    }
+
+    public static void ChangeTimeText(Context context, View view) {
+        final Calendar c = Calendar.getInstance();
+        final TextView edit = (TextView)view;
+
+        TimePickerDialog time_piker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                edit.setText(hourOfDay + ":" + minute + ":00");
+            }
+        }, c.get(Calendar.HOUR), c.get(Calendar.MINUTE),true);
+        time_piker.show();
+
     }
 }

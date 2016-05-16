@@ -9,19 +9,24 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
         android:id="@+id/current_start_date"
-        android:editable="false"></TextView>
-
-   <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.3"
-        android:id="@+id/current_end_date"
-        android:editable="false"></TextView>
+        android:onClick="clh_change_time"></TextView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.4"
-        android:editable="false"
-        android:text="@string/account"/>
+        android:layout_weight="0.3"
+        android:id="@+id/current_end_date"
+        android:onClick="clh_change_time"></TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:text="@string/accounts"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:text="@string/ways"/>
 </LinearLayout>

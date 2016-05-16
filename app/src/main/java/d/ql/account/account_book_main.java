@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import DBManager.DBManager;
 import d.ql.account.dummy.DummyCurrents;
+import util.Util;
 
 public class account_book_main extends AppCompatActivity
         implements current_list.OnListFragmentInteractionListener,account_list.OnListFragmentInteractionListener{
@@ -108,5 +109,9 @@ public class account_book_main extends AppCompatActivity
         intent.putExtra("account_balance", item.getBalance());
         intent.putExtra("account_db_id",item.getDb_id());
         startActivity(intent);
+    }
+
+    public void clh_change_time(View view){
+        Util.ChangeDataText(this, view);
     }
 }
