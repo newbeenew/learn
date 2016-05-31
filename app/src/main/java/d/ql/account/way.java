@@ -25,6 +25,10 @@ public class way {
         this.m_type = _type;
     }
 
+    public String toString(){
+        return m_name;
+    }
+
     private String m_name;
     private WAY_TYPE m_type;
 

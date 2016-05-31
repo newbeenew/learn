@@ -9,24 +9,26 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
         android:id="@+id/current_start_date"
-        android:onClick="clh_change_time"></TextView>
+        android:onClick="clh_change_date"></TextView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
         android:id="@+id/current_end_date"
-        android:onClick="clh_change_time"></TextView>
+        android:onClick="clh_change_date"></TextView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
-        android:text="@string/accounts"/>
+        android:text="@string/accounts"
+        android:onClick="clh_select_accounts"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
-        android:text="@string/ways"/>
+        android:text="@string/ways"
+        android:onClick="clh_select_ways"/>
 </LinearLayout>

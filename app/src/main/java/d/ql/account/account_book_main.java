@@ -10,12 +10,16 @@ import android.view.View;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import java.util.Vector;
+
 import DBManager.DBManager;
 import d.ql.account.dummy.DummyCurrents;
 import util.Util;
 
-public class account_book_main extends AppCompatActivity
-        implements current_list.OnListFragmentInteractionListener,account_list.OnListFragmentInteractionListener{
+public class account_book_main extends AppCompatActivity implements
+        current_list.OnListFragmentInteractionListener,
+        account_list.OnListFragmentInteractionListener,
+        CheckBoxListDlg.OnListFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +115,30 @@ public class account_book_main extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void clh_change_time(View view){
+    public void onListFragmentInteraction(Object item){
+
+    }
+
+    public void clh_change_date(View view){
         Util.ChangeDataText(this, view);
     }
+
+    public void clh_select_accounts(View view){
+        DBManager dbManager = new DBManager(this);
+        Vector<account> _accounts = dbManager.get_allAccount();
+        CheckBoxListDlg<account> checkbox_dlg = new CheckBoxListDlg<>();
+        checkbox_dlg.setValues(_accounts);
+
+        checkbox_dlg.show(getFragmentManager(), "选择帐号");
+    }
+
+    public void clh_select_ways(View view){
+        DBManager dbManager = new DBManager(this);
+        Vector<way> _way = dbManager.get_allWay();
+        CheckBoxListDlg<way> checkbox_dlg = new CheckBoxListDlg<>();
+        checkbox_dlg.setValues(_way);
+
+        checkbox_dlg.show(getFragmentManager(), "选择方式");
+    }
+
 }

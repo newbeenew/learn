@@ -23,7 +23,7 @@ public class account {
         this.balance = balance;
     }
 
-    public String toString(){return Double.toString(balance);}
+    public String toString(){return name;}
     private String name;
     private double balance;
 
