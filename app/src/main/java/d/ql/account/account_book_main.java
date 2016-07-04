@@ -121,6 +121,7 @@ public class account_book_main extends AppCompatActivity implements
 
     public void clh_change_date(View view){
         Util.ChangeDataText(this, view);
+        getFragmentManager().findFragmentByTag("list").setArguments();
     }
 
     public void clh_select_accounts(View view){

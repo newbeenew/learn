@@ -95,7 +95,7 @@ public class AddCurrentActivity extends AppCompatActivity {
     private void InitWaySpinner()
     {
         final Spinner way = (Spinner)findViewById(R.id.select_way);
-        Vector<way> ways = m_dbManager.get_allWay();//Ways.GetInstace().getWays();
+        Vector<way> ways = m_dbManager.get_allWay();//Ways.GetInstace().getTag_ways();
         /*if (ways.size() <= 0){
             way consume_way = new way();
             consume_way.set_name("消费");

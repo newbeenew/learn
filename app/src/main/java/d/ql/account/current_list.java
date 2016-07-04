@@ -9,15 +9,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import DBManager.DBManager;
 import d.ql.account.dummy.DummyCurrents;
 import d.ql.account.dummy.DummyCurrents.DummyItem;
 import util.Util;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 /**
@@ -34,11 +34,70 @@ public class current_list extends Fragment{
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
+    private Date start_date = null;
+    private Date end_date = null;
+
+    public class tagItem<T>{
+        T item;
+        boolean select;
+    }
+
+    public Vector<tagItem<account>> getTag_accounts() {
+        return tag_accounts;
+    }
+
+    public <Item> Vector<Item> getSelected_items(Vector<tagItem<Item>> tag_items) {
+        Vector<Item> selected_items = new Vector<>(0);
+        for(int i= 0; i < tag_items.size(); ++i){
+            if(tag_items.elementAt(i).select){
+                selected_items.add(tag_items.elementAt(i).item);
+            }
+        }
+        return selected_items;
+    }
+
+    public void setTag_accounts(Vector<tagItem<account>> tag_accounts) {
+        this.tag_accounts = tag_accounts;
+    }
+
+    public Vector<tagItem<way>> getTag_ways() {
+        return tag_ways;
+    }
+
+    public void setTag_ways(Vector<tagItem<way>> tag_ways) {
+        this.tag_ways = tag_ways;
+    }
+
+    private Vector<tagItem<account>> tag_accounts = new Vector<>(0);
+    private Vector<tagItem<way>> tag_ways = new Vector<>(0);
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public current_list() {
+    }
+
+    private void QueryAccounts(){
+        DBManager dbManager = new DBManager(getContext());
+        Vector<account> _accounts = dbManager.get_allAccount();
+        for (int i = 0; i < _accounts.size(); ++i) {
+            tagItem<account> tag_account = new tagItem<>();
+            tag_account.item = _accounts.elementAt(i);
+            tag_account.select = true;
+            tag_accounts.add(tag_account);
+        }
+    }
+
+    private void QueryWays(){
+        DBManager dbManager = new DBManager(getContext());
+        Vector<way> _ways = dbManager.get_allWay();
+        for (int i = 0; i < _ways.size(); ++i) {
+            tagItem<way> tag_way= new tagItem<>();
+            tag_way.item = _ways.elementAt(i);
+            tag_way.select = true;
+            tag_ways.add(tag_way);
+        }
     }
 
     // TODO: Customize parameter initialization
@@ -77,6 +136,24 @@ public class current_list extends Fragment{
             }
 
             DummyCurrents.clear();
+            if(tag_accounts.isEmpty()){
+                QueryAccounts();
+            }
+
+            if (tag_ways.isEmpty()){
+                QueryWays();
+            }
+
+            if (start_date == null){
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.DAY_OF_MONTH, 1);
+                start_date = new Date(c.getTimeInMillis());
+            }
+
+            if (end_date == null){
+                end_date = new Date(Calendar.getInstance().getTimeInMillis());
+            }
+
             getCurrentList();
 
             recyclerView.setAdapter(new CurrentRecyclerViewAdapter(DummyCurrents.ITEMS, mListener));
@@ -85,10 +162,9 @@ public class current_list extends Fragment{
         return view;
     }
 
-
     private void getCurrentList(){
         DBManager dbManager = new DBManager(getContext());
-        Vector<current> currents = dbManager.get_currents();
+        Vector<current> currents = dbManager.get_currents(start_date, end_date, getSelected_items(tag_accounts), getSelected_items(tag_ways) );
         for (int i =0; i < currents.size(); ++i){
             current cu = currents.elementAt(i);
             if(cu.get_account().getName() == null){

@@ -80,7 +80,7 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mValues.size() + 1;
     }
 
     @Override

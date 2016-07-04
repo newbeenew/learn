@@ -71,7 +71,7 @@ public class DBManager {
     }
 
     public void delete_account(account _account){
-        db.execSQL("DELETE FROM account WHERE _id = ?",new String[]{
+        db.execSQL("DELETE FROM account WHERE _id = ?", new String[]{
                 Integer.toString(_account.getDb_id())
         });
     }
@@ -122,11 +122,9 @@ public class DBManager {
                 });
     }
 
-    public Vector<current >get_currents(){
+    public Vector<current >get_currents(String sql) {
         Vector<current> all_current = new Vector<>(0);
-        Cursor currents_cursor = db.rawQuery("SELECT current._id , current.payment, current.time,current.description, current.way_id,current.account_id, " +
-                "way.name AS way_name, way.type , account.name AS account_name, account.balance FROM  current LEFT OUTER JOIN way ON current.way_id" +
-                " = way._id LEFT OUTER JOIN account ON current.account_id = account._id",null);
+        Cursor currents_cursor = db.rawQuery(sql, null);
         while (currents_cursor.moveToNext()){
             current _current = new current();
             _current.set_description(currents_cursor.getString(currents_cursor.getColumnIndex("description")));
@@ -160,6 +158,36 @@ public class DBManager {
             all_current.add(_current);
         }
         return all_current;
+    }
+
+    public Vector<current >get_currents(){
+        return get_currents("SELECT current._id , current.payment, current.time,current.description, current.way_id,current.account_id, " +
+                "way.name AS way_name, way.type , account.name AS account_name, account.balance FROM  current LEFT OUTER JOIN way ON current.way_id" +
+                " = way._id LEFT OUTER JOIN account ON current.account_id = account._id");
+    }
+
+    public Vector<current>get_currents(Date start, Date end, Vector<account> accounts, Vector<way> ways){
+        String sql = "SELECT current._id , current.payment, current.time,current.description, current.way_id,current.account_id, " +
+                "way.name AS way_name, way.type , account.name AS account_name, account.balance FROM  current LEFT OUTER JOIN way ON current.way_id" +
+                " = way._id LEFT OUTER JOIN account ON current.account_id = account._id";
+        sql += " where current.time >= " + String.valueOf(start.getTime() / 1000);
+        sql += " and current.time <= " + String.valueOf(end.getTime() / 1000);
+
+        sql += " and current.account_id in (";
+        for (int i = 0; i < accounts.size(); ++i){
+            sql += String.valueOf(accounts.elementAt(i).getDb_id()) + ",";
+        }
+        sql = sql.substring(0, sql.length() - 1);
+        sql += ")";
+
+        sql += " and current.way_id in (";
+        for (int i = 0; i < ways.size(); ++i){
+            sql += String.valueOf(ways.elementAt(i).getDb_id()) + ",";
+        }
+        sql = sql.substring(0, sql.length() - 1);
+        sql += ")";
+
+        return get_currents(sql);
     }
 
     public void add_current(current _current){

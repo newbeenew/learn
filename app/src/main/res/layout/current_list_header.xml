@@ -22,13 +22,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
-        android:text="@string/accounts"
+        android:text="@string/tag_accounts"
         android:onClick="clh_select_accounts"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
-        android:text="@string/ways"
+        android:text="@string/tag_ways"
         android:onClick="clh_select_ways"/>
 </LinearLayout>

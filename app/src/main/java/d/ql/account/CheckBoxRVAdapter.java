@@ -32,7 +32,7 @@ public class CheckBoxRVAdapter<T> extends RecyclerView.Adapter<CheckBoxRVAdapter
     public void onBindViewHolder(CheckBoxRVAdapter.ViewHolder holder, int position) {
         View view;
         if (position == mValues.size()) {
-
+           // mListener.onListFragmentInteraction(mValues);
         }
         else {
             CheckBox checkBox = (CheckBox)holder.mView.findViewById(R.id.checkbox);
