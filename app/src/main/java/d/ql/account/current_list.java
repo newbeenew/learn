@@ -34,13 +34,32 @@ public class current_list extends Fragment{
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
+    public Date getStart_date() {
+        return start_date;
+    }
+
+    private void UpdateAdapter(){
+        getCurrentList();
+        RecyclerView recyclerView2 =(RecyclerView)getView();
+        recyclerView2.setAdapter(new CurrentRecyclerViewAdapter(DummyCurrents.ITEMS, mListener));
+    }
+
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
+        UpdateAdapter();
+    }
+
+    public Date getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(Date end_date) {
+        this.end_date = end_date;
+        UpdateAdapter();
+    }
+
     private Date start_date = null;
     private Date end_date = null;
-
-    public class tagItem<T>{
-        T item;
-        boolean select;
-    }
 
     public Vector<tagItem<account>> getTag_accounts() {
         return tag_accounts;
@@ -58,6 +77,8 @@ public class current_list extends Fragment{
 
     public void setTag_accounts(Vector<tagItem<account>> tag_accounts) {
         this.tag_accounts = tag_accounts;
+
+        UpdateAdapter();
     }
 
     public Vector<tagItem<way>> getTag_ways() {
@@ -66,6 +87,7 @@ public class current_list extends Fragment{
 
     public void setTag_ways(Vector<tagItem<way>> tag_ways) {
         this.tag_ways = tag_ways;
+        UpdateAdapter();
     }
 
     private Vector<tagItem<account>> tag_accounts = new Vector<>(0);
@@ -155,8 +177,9 @@ public class current_list extends Fragment{
             }
 
             getCurrentList();
-
             recyclerView.setAdapter(new CurrentRecyclerViewAdapter(DummyCurrents.ITEMS, mListener));
+
+
         }
 
         return view;
@@ -195,6 +218,10 @@ public class current_list extends Fragment{
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void onResume(){
+        super.onResume();
     }
 
 

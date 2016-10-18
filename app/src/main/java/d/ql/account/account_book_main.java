@@ -1,5 +1,8 @@
 package d.ql.account;
 
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.content.Intent;
 import android.support.v4.app.FragmentTabHost;
@@ -10,6 +13,8 @@ import android.view.View;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import DBManager.DBManager;
@@ -19,7 +24,8 @@ import util.Util;
 public class account_book_main extends AppCompatActivity implements
         current_list.OnListFragmentInteractionListener,
         account_list.OnListFragmentInteractionListener,
-        CheckBoxListDlg.OnListFragmentInteractionListener{
+        CheckBoxListDlg.OnListFragmentInteractionListener,
+        Util.OnSetDateListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,31 +121,75 @@ public class account_book_main extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    public void onListFragmentInteraction(Object item){
+   /* public void onListFragmentInteraction(Vector<tagItem<way>> values){
+        //values.elementAt(0).item;
+    }*/
+
+    /*public void onListFragmentInteraction(Vector<tagItem<account>> values){
+        //values.elementAt(0).item;
+    }*/
+
+    private final static String DateType_START = "start_date";
+    private final static String DateType_END= "end_date";
+
+    public void OnSetDate(int year, int monthOfYear, int dayOfMonth, Object userdata)
+    {
+        Bundle bundle = new Bundle();
+        bundle.putLong((String) userdata, new GregorianCalendar(year, monthOfYear, dayOfMonth).getTimeInMillis());
+
+        current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");
+
+        if ((String)userdata == DateType_START) {
+            fragment.setStart_date(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
+        }
+        else if((String)userdata == DateType_START) {
+            fragment.setEnd_date(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
+        }
+      /*  android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.remove(fragment);
+        transaction.add(fragment, fragment.getTag());
+        transaction.attach(fragment);
+        transaction.commit();*/
+
 
     }
+    public void clh_change_start_date(View view){
+        current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");
+        Date start = Util.ChangeDataText(this, view, fragment.getStart_date().getTime(),DateType_START);
+    }
 
-    public void clh_change_date(View view){
-        Util.ChangeDataText(this, view);
-        getFragmentManager().findFragmentByTag("list").setArguments();
+    public void clh_change_end_date(View view){
+        current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");
+        Date end = Util.ChangeDataText(this, view, fragment.getEnd_date().getTime(), DateType_END);
     }
 
     public void clh_select_accounts(View view){
-        DBManager dbManager = new DBManager(this);
-        Vector<account> _accounts = dbManager.get_allAccount();
-        CheckBoxListDlg<account> checkbox_dlg = new CheckBoxListDlg<>();
-        checkbox_dlg.setValues(_accounts);
+        checkbox_dlg = new CheckBoxListDlg<account>();
+        current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");
+        CheckBoxListDlg<account> account_check_box = (CheckBoxListDlg<account> )checkbox_dlg;
+        account_check_box.setValues(fragment.getTag_accounts());
 
         checkbox_dlg.show(getFragmentManager(), "选择帐号");
     }
 
     public void clh_select_ways(View view){
-        DBManager dbManager = new DBManager(this);
-        Vector<way> _way = dbManager.get_allWay();
-        CheckBoxListDlg<way> checkbox_dlg = new CheckBoxListDlg<>();
-        checkbox_dlg.setValues(_way);
+        current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");
+        checkbox_dlg = new CheckBoxListDlg<way>();
+        CheckBoxListDlg<way> way_check_box = (CheckBoxListDlg<way> )checkbox_dlg;
+        way_check_box.setValues(fragment.getTag_ways());
 
         checkbox_dlg.show(getFragmentManager(), "选择方式");
+      ///  checkbox_dlg.S
     }
 
+
+    private DialogFragment checkbox_dlg;
+    @Override
+    public void onListFragmentInteraction(Vector values) {
+
+    }
+
+    public void OnCancel() {
+        checkbox_dlg.dismiss();
+    }
 }

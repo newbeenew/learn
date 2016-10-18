@@ -1,20 +1,20 @@
 package d.ql.account;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 
 import java.util.List;
+import java.util.Vector;
 
-/**
- * Created by ql on 16-5-21.
- */
 public class CheckBoxRVAdapter<T> extends RecyclerView.Adapter<CheckBoxRVAdapter.ViewHolder> {
-    private final List<T> mValues;
+    private final Vector<tagItem<T>> mValues;
     private final CheckBoxListDlg.OnListFragmentInteractionListener mListener;
-    public CheckBoxRVAdapter(List<T> values, CheckBoxListDlg.OnListFragmentInteractionListener listener){
+    public CheckBoxRVAdapter(Vector<tagItem<T>> values, CheckBoxListDlg.OnListFragmentInteractionListener listener){
         mValues = values;
         mListener = listener;
     }
@@ -32,18 +32,35 @@ public class CheckBoxRVAdapter<T> extends RecyclerView.Adapter<CheckBoxRVAdapter
     public void onBindViewHolder(CheckBoxRVAdapter.ViewHolder holder, int position) {
         View view;
         if (position == mValues.size()) {
-           // mListener.onListFragmentInteraction(mValues);
+            Button cancel = (Button)holder.mView.findViewById(R.id.check_box_cancel);
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.OnCancel();
+                }
+            });
+            Button ok = (Button)holder.mView.findViewById(R.id.check_box_ok);
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onListFragmentInteraction(mValues);
+                    //v.getContext().
+                }
+            });
         }
         else {
             CheckBox checkBox = (CheckBox)holder.mView.findViewById(R.id.checkbox);
-            holder.mItem = mValues.get(position);
+            final tagItem<T> tagItem = mValues.get(position);
+            holder.mItem = tagItem.item;
             checkBox.setText(holder.mItem.toString());
+            checkBox.setSelected(tagItem.select);
 
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     CheckBox  checkBox = (CheckBox)v;
                     checkBox.setSelected(!checkBox.isSelected());
+                    tagItem.select = !tagItem.select;
                 }
             });
         }

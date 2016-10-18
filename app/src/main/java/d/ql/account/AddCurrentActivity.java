@@ -38,7 +38,8 @@ import d.ql.account.Accounts;
 import d.ql.account.Ways;
 import util.Util;
 
-public class AddCurrentActivity extends AppCompatActivity {
+public class AddCurrentActivity extends AppCompatActivity implements
+    Util.OnSetDateListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +185,10 @@ public class AddCurrentActivity extends AppCompatActivity {
         }
     }
 
+    public void OnSetDate(int year, int monthOfYear, int dayOfMonth, Object userdata) {
+
+    }
+
     private void InitSelectAccountSpinner()
     {
         Spinner select_account = (Spinner)findViewById(R.id.select_account);
@@ -272,7 +277,8 @@ public class AddCurrentActivity extends AppCompatActivity {
     public void change_time(View view) {
         final TextView edit = (TextView)view;
         if(edit.getId() == R.id.date){
-            Util.ChangeDataText(this, view);
+            final Calendar c = Calendar.getInstance();
+            Util.ChangeDataText(this, view, c.getTimeInMillis(), null);
         }
         else if(edit.getId() == R.id.time){
             Util.ChangeTimeText(this, view);

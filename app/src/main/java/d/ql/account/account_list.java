@@ -16,10 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.Date;
 import java.util.Vector;
 
 import DBManager.DBManager;
 import d.ql.account.dummy.DummyAccounts;
+import d.ql.account.dummy.DummyCurrents;
 
 /**
  * A fragment representing a list of Items.
@@ -81,7 +83,6 @@ public class account_list extends Fragment {
             DummyAccounts.clear();
             getAccountList();
             setHasOptionsMenu(true);
-
 
             recyclerView.setAdapter(new MyaccountRecyclerViewAdapter(DummyAccounts.ITEMS, mListener));
         }
@@ -151,6 +152,7 @@ public class account_list extends Fragment {
                 .setNegativeButton("取消",null)
                 .show();
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private List<DummyItem> mValues;
     private final OnListFragmentInteractionListener mListener;
 
     public CurrentRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
@@ -55,14 +55,20 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
         return new ViewHolder(view,viewType);
     }
 
+    public  void resetData(List<DummyItem> Values){
+        mValues = Values;
+    }
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (holder.ViewType == HEAD_VIEW){
             return;
         }
-        holder.mItem = mValues.get(position);
-        holder.mTimeView.setText(mValues.get(position).GetTime());
-        holder.mContentView.setText(mValues.get(position).toString());
+
+        int index = position -1;
+        holder.mItem = mValues.get(index);
+        holder.mTimeView.setText(mValues.get(index).GetTime());
+        holder.mContentView.setText(mValues.get(index).toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

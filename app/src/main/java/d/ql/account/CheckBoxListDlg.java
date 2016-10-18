@@ -10,13 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by ql on 16-5-20.
  */
 
 public class CheckBoxListDlg<T> extends DialogFragment {
-    private List<T> mValues;
+
+    private Vector<tagItem<T>> mValues;
     private OnListFragmentInteractionListener mListener;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,7 +37,7 @@ public class CheckBoxListDlg<T> extends DialogFragment {
         return view;
     }
 
-    public void setValues(List<T> Values){
+    public void setValues(Vector<tagItem<T>> Values){
         mValues = Values;
     }
 
@@ -47,12 +49,14 @@ public class CheckBoxListDlg<T> extends DialogFragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+
+
     }
 
     //Object = T
     public interface OnListFragmentInteractionListener{
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Object item);
+        void onListFragmentInteraction(Vector values);
+        void OnCancel();
     }
-
 }

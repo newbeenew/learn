@@ -100,6 +100,7 @@ public class DBManager {
             way _way = new way();
             _way.set_name(ways_cursor.getString(1));
             _way.set_type(way.WAY_TYPE.values()[ways_cursor.getInt(2)]);
+            _way.setDb_id(ways_cursor.getInt(ways_cursor.getColumnIndex("_id")));
             ways.add(_way);
         }
         return ways;
@@ -170,8 +171,8 @@ public class DBManager {
         String sql = "SELECT current._id , current.payment, current.time,current.description, current.way_id,current.account_id, " +
                 "way.name AS way_name, way.type , account.name AS account_name, account.balance FROM  current LEFT OUTER JOIN way ON current.way_id" +
                 " = way._id LEFT OUTER JOIN account ON current.account_id = account._id";
-        sql += " where current.time >= " + String.valueOf(start.getTime() / 1000);
-        sql += " and current.time <= " + String.valueOf(end.getTime() / 1000);
+        sql += " where current.time >= " + String.valueOf(start.getTime());
+        sql += " and current.time <= " + String.valueOf(end.getTime());
 
         sql += " and current.account_id in (";
         for (int i = 0; i < accounts.size(); ++i){

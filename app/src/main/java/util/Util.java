@@ -51,18 +51,25 @@ public class Util {
         }
     }
 
-    public static void ChangeDataText(Context context, View view) {
+    public interface OnSetDateListener {
+        // TODO: Update argument type and name
+        public  void OnSetDate(int year, int monthOfYear, int dayOfMonth, Object userdata);
+    }
+
+    public static Date ChangeDataText(final Context context, View view, long initDate, final  Object userdata) {
         final Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(initDate);
         final TextView edit = (TextView)view;
 
-            DatePickerDialog date_piker = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    edit.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
-                }
-            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH),c.get(Calendar.DATE));
-            date_piker.show();
-
+        DatePickerDialog date_piker = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                     edit.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                     OnSetDateListener listener = (OnSetDateListener)context;
+                     listener.OnSetDate(year, monthOfYear, dayOfMonth, userdata);
+                  }
+             }, c.get(Calendar.YEAR), c.get(Calendar.MONTH),c.get(Calendar.DATE));
+        date_piker.show();
+        return c.getTime();
     }
 
     public static void ChangeTimeText(Context context, View view) {
@@ -78,4 +85,5 @@ public class Util {
         time_piker.show();
 
     }
+
 }
