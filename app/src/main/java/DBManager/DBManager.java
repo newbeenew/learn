@@ -174,19 +174,23 @@ public class DBManager {
         sql += " where current.time >= " + String.valueOf(start.getTime());
         sql += " and current.time <= " + String.valueOf(end.getTime());
 
-        sql += " and current.account_id in (";
-        for (int i = 0; i < accounts.size(); ++i){
-            sql += String.valueOf(accounts.elementAt(i).getDb_id()) + ",";
+        if (0 < accounts.size()) {
+            sql += " and current.account_id in (";
+            for (int i = 0; i < accounts.size(); ++i) {
+                sql += String.valueOf(accounts.elementAt(i).getDb_id()) + ",";
+            }
+            sql = sql.substring(0, sql.length() - 1);
+            sql += ")";
         }
-        sql = sql.substring(0, sql.length() - 1);
-        sql += ")";
 
-        sql += " and current.way_id in (";
-        for (int i = 0; i < ways.size(); ++i){
-            sql += String.valueOf(ways.elementAt(i).getDb_id()) + ",";
+        if (0 < ways.size()) {
+            sql += " and current.way_id in (";
+            for (int i = 0; i < ways.size(); ++i) {
+                sql += String.valueOf(ways.elementAt(i).getDb_id()) + ",";
+            }
+            sql = sql.substring(0, sql.length() - 1);
+            sql += ")";
         }
-        sql = sql.substring(0, sql.length() - 1);
-        sql += ")";
 
         return get_currents(sql);
     }

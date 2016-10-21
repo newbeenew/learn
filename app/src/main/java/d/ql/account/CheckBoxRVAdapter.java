@@ -44,7 +44,7 @@ public class CheckBoxRVAdapter<T> extends RecyclerView.Adapter<CheckBoxRVAdapter
                 @Override
                 public void onClick(View v) {
                     mListener.onListFragmentInteraction(mValues);
-                    //v.getContext().
+                    mListener.OnCancel();
                 }
             });
         }
@@ -53,13 +53,12 @@ public class CheckBoxRVAdapter<T> extends RecyclerView.Adapter<CheckBoxRVAdapter
             final tagItem<T> tagItem = mValues.get(position);
             holder.mItem = tagItem.item;
             checkBox.setText(holder.mItem.toString());
-            checkBox.setSelected(tagItem.select);
+            checkBox.setChecked(tagItem.select);
 
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     CheckBox  checkBox = (CheckBox)v;
-                    checkBox.setSelected(!checkBox.isSelected());
                     tagItem.select = !tagItem.select;
                 }
             });

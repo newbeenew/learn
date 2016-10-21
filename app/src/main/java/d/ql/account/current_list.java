@@ -77,9 +77,9 @@ public class current_list extends Fragment{
 
     public void setTag_accounts(Vector<tagItem<account>> tag_accounts) {
         this.tag_accounts = tag_accounts;
-
         UpdateAdapter();
     }
+
 
     public Vector<tagItem<way>> getTag_ways() {
         return tag_ways;
@@ -104,9 +104,7 @@ public class current_list extends Fragment{
         DBManager dbManager = new DBManager(getContext());
         Vector<account> _accounts = dbManager.get_allAccount();
         for (int i = 0; i < _accounts.size(); ++i) {
-            tagItem<account> tag_account = new tagItem<>();
-            tag_account.item = _accounts.elementAt(i);
-            tag_account.select = true;
+            tagItem<account> tag_account = new tagItem<>(_accounts.elementAt(i),true);
             tag_accounts.add(tag_account);
         }
     }
@@ -115,9 +113,7 @@ public class current_list extends Fragment{
         DBManager dbManager = new DBManager(getContext());
         Vector<way> _ways = dbManager.get_allWay();
         for (int i = 0; i < _ways.size(); ++i) {
-            tagItem<way> tag_way= new tagItem<>();
-            tag_way.item = _ways.elementAt(i);
-            tag_way.select = true;
+            tagItem<way> tag_way= new tagItem<>(_ways.elementAt(i), true);
             tag_ways.add(tag_way);
         }
     }

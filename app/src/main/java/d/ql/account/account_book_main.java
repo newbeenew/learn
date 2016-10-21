@@ -164,29 +164,52 @@ public class account_book_main extends AppCompatActivity implements
     }
 
     public void clh_select_accounts(View view){
-        checkbox_dlg = new CheckBoxListDlg<account>();
         current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");
-        CheckBoxListDlg<account> account_check_box = (CheckBoxListDlg<account> )checkbox_dlg;
-        account_check_box.setValues(fragment.getTag_accounts());
 
+        CheckBoxListDlg<account> account_check_box = new CheckBoxListDlg<account>();
+        account_check_box.setValues(fragment.getTag_accounts());
+        setTagItems = new SetTagAccounts();
+
+        checkbox_dlg = account_check_box;
         checkbox_dlg.show(getFragmentManager(), "选择帐号");
     }
 
     public void clh_select_ways(View view){
         current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");
-        checkbox_dlg = new CheckBoxListDlg<way>();
-        CheckBoxListDlg<way> way_check_box = (CheckBoxListDlg<way> )checkbox_dlg;
-        way_check_box.setValues(fragment.getTag_ways());
 
+        CheckBoxListDlg<way> way_check_box = new CheckBoxListDlg<way>();
+        way_check_box.setValues(fragment.getTag_ways());
+        setTagItems = new SetTagWays();
+
+        checkbox_dlg = way_check_box;
         checkbox_dlg.show(getFragmentManager(), "选择方式");
       ///  checkbox_dlg.S
     }
 
 
     private DialogFragment checkbox_dlg;
+    private SetTagItems setTagItems;
+
+    interface SetTagItems{
+          void SetTagItems(current_list fragment ,Vector v);
+    }
+
+    class SetTagAccounts implements SetTagItems{
+        public  void SetTagItems(current_list fragment ,Vector v) {
+            fragment.setTag_accounts(v);
+        }
+    }
+
+    class SetTagWays implements SetTagItems{
+        public  void SetTagItems(current_list fragment ,Vector v) {
+            fragment.setTag_ways(v);
+        }
+    }
+
     @Override
     public void onListFragmentInteraction(Vector values) {
-
+        current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");
+        setTagItems.SetTagItems(fragment, values);
     }
 
     public void OnCancel() {

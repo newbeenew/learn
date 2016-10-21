@@ -6,4 +6,11 @@ package d.ql.account;
 public class tagItem<T>{
     T item;
     boolean select;
+
+
+    public tagItem(T _item, boolean isSelect)
+    {
+        item = _item;
+        select = isSelect;
+    }
 }

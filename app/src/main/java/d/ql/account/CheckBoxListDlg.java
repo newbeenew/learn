@@ -21,6 +21,7 @@ public class CheckBoxListDlg<T> extends DialogFragment {
     private Vector<tagItem<T>> mValues;
     private OnListFragmentInteractionListener mListener;
 
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
