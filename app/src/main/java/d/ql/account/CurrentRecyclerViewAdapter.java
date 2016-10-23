@@ -1,11 +1,9 @@
 package d.ql.account;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import d.ql.account.current_list.OnListFragmentInteractionListener;
@@ -14,7 +12,6 @@ import util.Util;
 
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +28,7 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
         mValues = items;
         mListener = listener;
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -76,10 +74,20 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onClickItem(holder.mItem);
                     holder.mContentView.setText(holder.mItem.toString());
                     holder.mTimeView.setText(holder.mItem.GetTime());
                 }
+            }
+        });
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (null != mListener){
+                    mListener.onLongClickItem(holder.mItem);
+                }
+                return true;
             }
         });
     }

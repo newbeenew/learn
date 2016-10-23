@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import d.ql.account.account;
+import d.ql.account.current;
 import d.ql.account.way;
 import util.Util;
 
@@ -61,14 +62,16 @@ public class DummyCurrents {
         public account _account;
         public way _way;
         public boolean bDetails ;
+        public current _current;
 
-        public DummyItem(Date time, String content, String details, account _account, way _way) {
-            this.time = time;
+        public DummyItem(Date time, String content, String details, current _current) {
+            this.time = _current.get_time();
             this.content = content;
             this.details = details;
             bDetails = false;
-            this._account =_account;
-            this._way = _way;
+            this._account =_current.get_account();
+            this._way = _current.get_way();
+            this._current = _current;
         }
 
         public String GetTime(){

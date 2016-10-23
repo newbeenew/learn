@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.io.Reader;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -222,17 +223,12 @@ public class AddCurrentActivity extends AppCompatActivity implements
 
             Spinner account = (Spinner)findViewById(R.id.select_account);
             String account_name = account.getSelectedItem().toString();
+
             account select_account =  m_dbManager.get_account(account_name);//Accounts.GetInstance().get_account(account_way);
 
-           // EditText current_text = (EditText)findViewById(R.time.current_input);
             double current = Double.parseDouble(v.getText().toString());
-            if (selected_way.get_type() == way.WAY_TYPE.INCOME){
-                select_account.setBalance( select_account.getBalance() + current);
-            }
-            else{
-                select_account.setBalance( select_account.getBalance() - current);
-            }
 
+            Util.UpdateAccount(select_account,selected_way.get_type(), current);
 
             EditText decript_input = (EditText)findViewById(R.id.comment);
 

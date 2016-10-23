@@ -1,11 +1,14 @@
 package d.ql.account;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.content.Intent;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -108,8 +111,39 @@ public class account_book_main extends AppCompatActivity implements
 
 
     @Override
-    public void onListFragmentInteraction(DummyCurrents.DummyItem item) {
+    public void onClickItem(DummyCurrents.DummyItem item) {
         item.bDetails = !item.bDetails;
+    }
+
+
+    public void onLongClickItem(final DummyCurrents.DummyItem item){
+        AlertDialog.Builder dlg = new AlertDialog.Builder(this);
+        final DBManager dbManager = new DBManager(this);
+        final current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");
+
+        dlg.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dbManager.delete_current(item._current);
+
+                account _account = dbManager.get_account(item._current.get_account().getName());
+                Util.UpdateAccount(_account,
+                        item._way.get_type() == way.WAY_TYPE.INCOME ? way.WAY_TYPE.OUTGO : way.WAY_TYPE.INCOME,
+                        item._current.get_payment());
+                dbManager.update_account(_account);
+
+                fragment.UpdateAdapter();
+            }
+        });
+
+        dlg.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //dlg.dismiss
+            }
+        });
+
+        dlg.show();
     }
 
     @Override
@@ -121,11 +155,11 @@ public class account_book_main extends AppCompatActivity implements
         startActivity(intent);
     }
 
-   /* public void onListFragmentInteraction(Vector<tagItem<way>> values){
+   /* public void onClickItem(Vector<tagItem<way>> values){
         //values.elementAt(0).item;
     }*/
 
-    /*public void onListFragmentInteraction(Vector<tagItem<account>> values){
+    /*public void onClickItem(Vector<tagItem<account>> values){
         //values.elementAt(0).item;
     }*/
 

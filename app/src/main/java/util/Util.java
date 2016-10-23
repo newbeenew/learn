@@ -8,12 +8,15 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import d.ql.account.R;
+import d.ql.account.account;
+import d.ql.account.way;
 
 /**
  * Created by ql on 16-4-19.
@@ -86,4 +89,20 @@ public class Util {
 
     }
 
+    public  static boolean UpdateAccount(account _account, way.WAY_TYPE wayType, double current){
+        BigDecimal b ;
+        if (wayType == way.WAY_TYPE.INCOME){
+            b = new BigDecimal(_account.getBalance() + current);
+        }
+        else{
+            b = new BigDecimal(_account.getBalance() - current);
+        }
+
+        if(b.doubleValue() < 0) {
+            return false;
+        }
+
+        _account.setBalance(b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        return true;
+    }
 }

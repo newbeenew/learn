@@ -12,6 +12,7 @@ import java.util.Vector;
 import d.ql.account.account;
 import d.ql.account.current;
 import d.ql.account.way;
+import util.Util;
 
 /**
  * Created by ql on 16-4-5.
@@ -128,6 +129,7 @@ public class DBManager {
         Cursor currents_cursor = db.rawQuery(sql, null);
         while (currents_cursor.moveToNext()){
             current _current = new current();
+            _current.setDb_id(currents_cursor.getInt(currents_cursor.getColumnIndex("_id")));
             _current.set_description(currents_cursor.getString(currents_cursor.getColumnIndex("description")));
 
             account _account = new account();
@@ -142,6 +144,7 @@ public class DBManager {
             way _way = new way();
             _way.set_name(currents_cursor.getString(currents_cursor.getColumnIndex("way_name")));
             _way.set_type(way.WAY_TYPE.values()[currents_cursor.getInt(currents_cursor.getColumnIndex("way.type"))]);
+            _way.setDb_id(currents_cursor.getInt(currents_cursor.getColumnIndex("way_id")));
             _current.set_way(_way);
 
             _current.set_payment(currents_cursor.getDouble(currents_cursor.getColumnIndex("current.payment")));
@@ -214,5 +217,9 @@ public class DBManager {
                         _current.get_description(),
                         Integer.toString(_current.getDb_id())
         });
+    }
+
+    public void delete_current(current _current){
+        db.execSQL("DELETE FROM current where _id=?", new String[]{Integer.toString(_current.getDb_id())});
     }
 }

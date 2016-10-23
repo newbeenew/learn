@@ -35,7 +35,7 @@ public class MyaccountRecyclerViewAdapter extends RecyclerView.Adapter<Myaccount
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_current, parent, false);
+                .inflate(R.layout.fragment_account, parent, false);
         return new ViewHolder(view);
     }
 
@@ -43,7 +43,7 @@ public class MyaccountRecyclerViewAdapter extends RecyclerView.Adapter<Myaccount
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getName());
-        holder.mContentView.setText(mValues.get(position).toString());
+        holder.mContentView.setText(Double.toString(mValues.get(position).getBalance()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -38,7 +38,7 @@ public class current_list extends Fragment{
         return start_date;
     }
 
-    private void UpdateAdapter(){
+    public void UpdateAdapter(){
         getCurrentList();
         RecyclerView recyclerView2 =(RecyclerView)getView();
         recyclerView2.setAdapter(new CurrentRecyclerViewAdapter(DummyCurrents.ITEMS, mListener));
@@ -181,20 +181,56 @@ public class current_list extends Fragment{
         return view;
     }
 
+    private boolean IsAccountSeleted(account a){
+        for(tagItem<account> _tagItem : tag_accounts){
+            if (_tagItem.select && (a.getDb_id() == _tagItem.item.getDb_id())){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean IsWaySeleted(way w){
+        for(tagItem<way> _tagItem : tag_ways){
+            if (_tagItem.select && (w.getDb_id() == _tagItem.item.getDb_id())){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void getCurrentList(){
+        DummyCurrents.clear();
+
         DBManager dbManager = new DBManager(getContext());
-        Vector<current> currents = dbManager.get_currents(start_date, end_date, getSelected_items(tag_accounts), getSelected_items(tag_ways) );
+        Vector<current> currents = dbManager.get_currents( );
         for (int i =0; i < currents.size(); ++i){
             current cu = currents.elementAt(i);
             if(cu.get_account().getName() == null){
+                assert(false);
                 continue;
             }
+
+            Date cu_time = cu.get_time();
+            if (cu_time.before(start_date) || cu_time.after(end_date)){
+                continue;
+            }
+
+            if (!IsAccountSeleted(cu.get_account())){
+                continue;
+            }
+
+            if (!IsWaySeleted(cu.get_way())){
+                continue;
+            }
+
             DummyItem item = new DummyItem(
                     cu.get_time(),
                     cu.get_way().get_name() + "\n" + (cu.get_way().get_type() == way.WAY_TYPE.INCOME?"+":"-") +Double.toString(cu.get_payment()),
                     cu.get_description(),
-                    cu.get_account(),
-                    cu.get_way());
+                    cu);
             DummyCurrents.addItem(item);
         }
     }
@@ -234,6 +270,7 @@ public class current_list extends Fragment{
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-            void onListFragmentInteraction(DummyItem item);
+            void onClickItem(DummyItem item);
+            void onLongClickItem(DummyItem item);
     }
 }
