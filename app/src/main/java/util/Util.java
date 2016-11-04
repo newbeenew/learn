@@ -56,7 +56,7 @@ public class Util {
 
     public interface OnSetDateListener {
         // TODO: Update argument type and name
-        public  void OnSetDate(int year, int monthOfYear, int dayOfMonth, Object userdata);
+        public  boolean OnSetDate(int year, int monthOfYear, int dayOfMonth, Object userdata);
     }
 
     public static Date ChangeDataText(final Context context, View view, long initDate, final  Object userdata) {
@@ -66,9 +66,11 @@ public class Util {
 
         DatePickerDialog date_piker = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                  public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                     edit.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                      OnSetDateListener listener = (OnSetDateListener)context;
-                     listener.OnSetDate(year, monthOfYear, dayOfMonth, userdata);
+                     if(!listener.OnSetDate(year, monthOfYear, dayOfMonth, userdata)){
+                         return;
+                     }
+                     edit.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                   }
              }, c.get(Calendar.YEAR), c.get(Calendar.MONTH),c.get(Calendar.DATE));
         date_piker.show();
@@ -89,20 +91,25 @@ public class Util {
 
     }
 
+    public static double ChangeDoubleRecision(double value, int recision) {
+        BigDecimal b = new BigDecimal(value);
+        return b.setScale(recision, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
     public  static boolean UpdateAccount(account _account, way.WAY_TYPE wayType, double current){
-        BigDecimal b ;
+        double b ;
         if (wayType == way.WAY_TYPE.INCOME){
-            b = new BigDecimal(_account.getBalance() + current);
+            b = _account.getBalance() + current;
         }
         else{
-            b = new BigDecimal(_account.getBalance() - current);
+            b = _account.getBalance() - current;
         }
 
-        if(b.doubleValue() < 0) {
+        /*if(b.doubleValue() < 0) {
             return false;
-        }
+        }*/
 
-        _account.setBalance(b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        _account.setBalance(ChangeDoubleRecision(b,2));
         return true;
     }
 }

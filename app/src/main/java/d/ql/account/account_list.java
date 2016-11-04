@@ -80,17 +80,21 @@ public class account_list extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            DummyAccounts.clear();
-            getAccountList();
             setHasOptionsMenu(true);
-
+            getAccountList();
             recyclerView.setAdapter(new MyaccountRecyclerViewAdapter(DummyAccounts.ITEMS, mListener));
         }
         return view;
     }
 
+    public void UpdateAdapter(){
+        getAccountList();
+        RecyclerView recyclerView = (RecyclerView)getView();
+        recyclerView.setAdapter(new MyaccountRecyclerViewAdapter(DummyAccounts.ITEMS, mListener));
+    }
 
     private  void getAccountList(){
+        DummyAccounts.clear();
         DBManager dbManager = new DBManager(getContext());
         Vector<account> _accounts = dbManager.get_allAccount();
         for (int i =0; i < _accounts.size(); ++i){
@@ -147,6 +151,7 @@ public class account_list extends Fragment {
                         EditText et_balance = (EditText)layout.findViewById(R.id.account_balance);
                         new_account.setBalance(Double.parseDouble(et_balance.getText().toString()));
                         dbManager.add_account(new_account);
+                        UpdateAdapter();
                     }
                 })
                 .setNegativeButton("取消",null)

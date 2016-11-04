@@ -108,6 +108,9 @@ public class DBManager {
     }
 
     public void add_way(way _way){
+        if (db.rawQuery("SELECT name FROM way where name = " + _way.get_name(), null).isLast()){
+            return;
+        }
         db.execSQL("INSERT INTO way VALUES(NULL,?,?)",
                 new String[]{
                         _way.get_name(),
@@ -221,5 +224,9 @@ public class DBManager {
 
     public void delete_current(current _current){
         db.execSQL("DELETE FROM current where _id=?", new String[]{Integer.toString(_current.getDb_id())});
+    }
+
+    public void delete_way(String wayName){
+        db.execSQL("DELETE FROM way where name=" + wayName, null);
     }
 }

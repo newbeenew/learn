@@ -93,7 +93,17 @@ public class AddCurrentActivity extends AppCompatActivity implements
     }
 
 
+    private Vector<String> ways_vec = new Vector<String>(0);
 
+
+    private void SetWaySpinnerAdapter(Spinner way ){
+        ways_vec.add("add new way");
+        final String[] ways_array = new String[ways_vec.size()];
+        ways_vec.copyInto(ways_array);
+
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, ways_array);
+        way.setAdapter(adapter);
+    }
     private void InitWaySpinner()
     {
         final Spinner way = (Spinner)findViewById(R.id.select_way);
@@ -112,8 +122,6 @@ public class AddCurrentActivity extends AppCompatActivity implements
             eType = d.ql.account.way.WAY_TYPE.INCOME;
         }*/
 
-
-        Vector<String> ways_vec = new Vector<String>(0);
         for(int i = 0; i < ways.size(); ++i){
             if (null != ways.elementAt(i).get_name()) {
                 ways_vec.add(ways.elementAt(i).get_name());
@@ -129,7 +137,7 @@ public class AddCurrentActivity extends AppCompatActivity implements
 
         way.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
                 if (position == (ways_array.length - 1)) {
                     LayoutInflater inflater = getLayoutInflater();
                     ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.add_way_dialog, (ViewGroup) findViewById(R.id.add_way_dialog));
@@ -144,14 +152,36 @@ public class AddCurrentActivity extends AppCompatActivity implements
                                 }
                             })
                             .show();
+
                 }
             }
+
 
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+
+        way.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final int pos = i;
+                new AlertDialog.Builder(way.getContext())
+                        .setTitle("确定要删除way" + ways_array[pos] + " 吗?")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                DBManager dbManager = new DBManager(getParent());
+                                dbManager.delete_way(ways_array[pos]);
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .show();
+                return  true;
+            }
+        });
     }
+
 
     class ClickListener implements DialogInterface.OnClickListener {
         private ViewGroup layout;
@@ -182,12 +212,14 @@ public class AddCurrentActivity extends AppCompatActivity implements
             }
 
             m_dbManager.add_way(new_way);
-            spinner.setSelection(spinner.getCount() - 1);
+            ways_vec.addElement(new_way.get_name());
+            SetWaySpinnerAdapter(spinner);
+            spinner.setSelection(0);
         }
     }
 
-    public void OnSetDate(int year, int monthOfYear, int dayOfMonth, Object userdata) {
-
+    public boolean OnSetDate(int year, int monthOfYear, int dayOfMonth, Object userdata) {
+        return true;
     }
 
     private void InitSelectAccountSpinner()

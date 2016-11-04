@@ -146,13 +146,22 @@ public class account_book_main extends AppCompatActivity implements
         dlg.show();
     }
 
+    private static final int RequestAccountDetailActivity = 0;
     @Override
     public void onListFragmentInteraction(account item) {
         Intent intent = new Intent(this, accountDetailActivity.class);
         intent.putExtra("account_name", item.getName());
         intent.putExtra("account_balance", item.getBalance());
         intent.putExtra("account_db_id",item.getDb_id());
-        startActivity(intent);
+        startActivityForResult(intent, RequestAccountDetailActivity);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,Intent intent) {
+        if (RequestAccountDetailActivity == requestCode){
+            account_list accounts =  (account_list) getSupportFragmentManager().findFragmentByTag("accounts");
+            accounts.UpdateAdapter();
+        }
     }
 
    /* public void onClickItem(Vector<tagItem<way>> values){
@@ -166,7 +175,7 @@ public class account_book_main extends AppCompatActivity implements
     private final static String DateType_START = "start_date";
     private final static String DateType_END= "end_date";
 
-    public void OnSetDate(int year, int monthOfYear, int dayOfMonth, Object userdata)
+    public boolean OnSetDate(int year, int monthOfYear, int dayOfMonth, Object userdata)
     {
         Bundle bundle = new Bundle();
         bundle.putLong((String) userdata, new GregorianCalendar(year, monthOfYear, dayOfMonth).getTimeInMillis());
@@ -174,18 +183,12 @@ public class account_book_main extends AppCompatActivity implements
         current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");
 
         if ((String)userdata == DateType_START) {
-            fragment.setStart_date(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
+            return  fragment.setStart_date(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
         }
-        else if((String)userdata == DateType_START) {
-            fragment.setEnd_date(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
+        else if((String)userdata == DateType_END) {
+            return fragment.setEnd_date(new GregorianCalendar(year, monthOfYear, dayOfMonth).getTime());
         }
-      /*  android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.remove(fragment);
-        transaction.add(fragment, fragment.getTag());
-        transaction.attach(fragment);
-        transaction.commit();*/
-
-
+        return false;
     }
     public void clh_change_start_date(View view){
         current_list fragment =  (current_list)getSupportFragmentManager().findFragmentByTag("list");

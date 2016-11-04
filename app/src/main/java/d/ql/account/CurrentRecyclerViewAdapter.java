@@ -11,7 +11,9 @@ import d.ql.account.dummy.DummyCurrents.DummyItem;
 import util.Util;
 
 
+import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +25,13 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
 
     private List<DummyItem> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private Date start_date;
+    private Date end_date;
+
+    public void SetDate(Date start, Date end){
+        start_date = start;
+        end_date = end;
+    }
 
     public CurrentRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -42,12 +51,17 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
             view =  LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.current_list_header, parent, false);
 
-            final Calendar c = Calendar.getInstance();
             TextView startDate = (TextView)view.findViewById(R.id.current_start_date);
-            startDate.setText(Integer.toString(c.get(Calendar.YEAR)) + "-" + Integer.toString(c.get(Calendar.MONTH) + 1) + "-" + "1");
+            startDate.setText(Util.ConvertToDateString(start_date));
 
             TextView endDate = (TextView)view.findViewById(R.id.current_end_date);
-            endDate.setText(Util.ConvertToDateString(c.getTime()));
+            endDate.setText(Util.ConvertToDateString(end_date));
+
+            TextView incomes = (TextView)view.findViewById(R.id.incomes);
+            incomes.setText(Double.toString(CalculateTotal(way.WAY_TYPE.INCOME)));
+
+            TextView outgos  = (TextView)view.findViewById(R.id.outgos);
+            outgos.setText(Double.toString(CalculateTotal(way.WAY_TYPE.OUTGO)));
         }
 
         return new ViewHolder(view,viewType);
@@ -104,6 +118,17 @@ public class CurrentRecyclerViewAdapter extends RecyclerView.Adapter<CurrentRecy
         }else{
             return BODY_VIEW ;
         }
+    }
+
+    public Double CalculateTotal(way.WAY_TYPE type){
+        double totals = 0;
+        for (DummyItem item: mValues
+             ) {
+            if (item._current.get_way().get_type() == type){
+                totals += item._current.get_payment();
+            }
+        }
+        return Util.ChangeDoubleRecision(totals, 2);
     }
 
     private final int HEAD_VIEW = 0;

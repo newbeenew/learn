@@ -40,22 +40,32 @@ public class current_list extends Fragment{
 
     public void UpdateAdapter(){
         getCurrentList();
-        RecyclerView recyclerView2 =(RecyclerView)getView();
-        recyclerView2.setAdapter(new CurrentRecyclerViewAdapter(DummyCurrents.ITEMS, mListener));
+        RecyclerView recyclerView =(RecyclerView)getView();
+        CurrentRecyclerViewAdapter adapter = new CurrentRecyclerViewAdapter(DummyCurrents.ITEMS, mListener);
+        adapter.SetDate(start_date, end_date);
+        recyclerView.setAdapter(adapter);
     }
 
-    public void setStart_date(Date start_date) {
+    public boolean setStart_date(Date start_date) {
+        if (start_date.after(end_date)){
+            return false;
+        }
         this.start_date = start_date;
         UpdateAdapter();
+        return true;
     }
 
     public Date getEnd_date() {
         return end_date;
     }
 
-    public void setEnd_date(Date end_date) {
+    public boolean setEnd_date(Date end_date) {
+        if (end_date.before(start_date)){
+            return false;
+        }
         this.end_date = end_date;
         UpdateAdapter();
+        return true;
     }
 
     private Date start_date = null;
@@ -173,9 +183,9 @@ public class current_list extends Fragment{
             }
 
             getCurrentList();
-            recyclerView.setAdapter(new CurrentRecyclerViewAdapter(DummyCurrents.ITEMS, mListener));
-
-
+            CurrentRecyclerViewAdapter adapter = new CurrentRecyclerViewAdapter(DummyCurrents.ITEMS, mListener);
+            adapter.SetDate(start_date, end_date);
+            recyclerView.setAdapter(adapter);
         }
 
         return view;
